@@ -1,0 +1,14 @@
+E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\Release\LvWpfLib.dll
+E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\Release\LvWpfLib.pdb
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\NcPlot.g.cs
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\GeneratedInternalTypeHelper.g.cs
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib_MarkupCompile.cache
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib_MarkupCompile.lref
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\NcPlot.baml
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\Themes\Generic.baml
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib.g.resources
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib.Properties.Resources.resources
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib.csproj.GenerateResource.cache
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib.csproj.CoreCompileInputs.cache
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib.dll
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Release\LvWpfLib.pdb
