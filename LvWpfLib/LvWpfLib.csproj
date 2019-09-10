@@ -78,6 +78,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="NcTimePlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -94,6 +98,9 @@
   <ItemGroup>
     <Compile Include="NcPlot.xaml.cs">
       <DependentUpon>NcPlot.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NcTimePlot.xaml.cs">
+      <DependentUpon>NcTimePlot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

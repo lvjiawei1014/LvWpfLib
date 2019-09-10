@@ -62,7 +62,7 @@ namespace LvWpfDemo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var s = new PlotSeries();
+            var s = new PlotSeries("",Colors.Yellow,2);
             s.points = new Point[] { new Point(0, 100), new Point(100, 200), new Point(200, 666), new Point(800, 200) };
             plot.Series.Add(s);
             plot.RefreshDataAndPlot();
@@ -70,7 +70,7 @@ namespace LvWpfDemo
 
         private void BtnAddPoint_Click(object sender, RoutedEventArgs e)
         {
-            var s = new PlotSeries();
+            var s = new PlotSeries("",Colors.Lime,2);
             s.points = new Point[] { new Point(0, 100), new Point(100, 200), new Point(200, 666), new Point(800, 200) };
             plot.Series.Add(s);
             plot.RefreshDataAndPlot();
