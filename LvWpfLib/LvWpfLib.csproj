@@ -70,15 +70,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils.cs" />
     <Page Include="ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NcPlot.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="NcTimePlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -98,9 +95,6 @@
   <ItemGroup>
     <Compile Include="NcPlot.xaml.cs">
       <DependentUpon>NcPlot.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="NcTimePlot.xaml.cs">
-      <DependentUpon>NcTimePlot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

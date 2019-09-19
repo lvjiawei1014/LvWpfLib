@@ -27,6 +27,8 @@ namespace LvWpfLib
         private double maxX = 1000;
         private double minX = 0;
 
+        private double AxisGraduateX = 60;
+
 
         private DateTime maxTime;
         private DateTime minTime;
@@ -99,6 +101,7 @@ namespace LvWpfLib
         public DateTime[] GraduateTime { get => graduateTime; set => graduateTime = value; }
         public TimeSpan TimeSpan { get => timeSpan; set => timeSpan = value; }
         public TimeSpanLevel TimeSpanLevel { get => timeSpanLevel; set => timeSpanLevel = value; }
+        public double AxisGraduateX1 { get => AxisGraduateX; set => AxisGraduateX = value; }
 
         public NcPlot()
         {
@@ -141,22 +144,12 @@ namespace LvWpfLib
                     }
                     break;
                 case PlotType.TimePlot:
-
-                    switch (this.TimeSpanLevel)
+                    for (int i = 0; i < graduateTime.Length; i++)
                     {
-                        case TimeSpanLevel.Minute:
-
-                            break;
-                        case TimeSpanLevel.Hour:
-                            break;
-                        case TimeSpanLevel.day:
-                            break;
-                        case TimeSpanLevel.Month:
-                            break;
-                        case TimeSpanLevel.Year:
-                            break;
-                        default:
-                            break;
+                        x = leftSpace + CanvasWidth *( (double)(graduateTime[i].Ticks - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks));
+                        drawingContext.DrawLine(AxisPen, new Point(x, topSpace + CanvasHeight), new Point(x, topSpace + CanvasHeight - 4));
+                        FormattedText graduateText = new FormattedText(Utils.GetTimeLabel(graduateTime[i],this.timeSpanLevel), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("宋体"), this.FontSize, this.Foreground);
+                        drawingContext.DrawText(graduateText, new Point(x - graduateText.Width / 2, topSpace + CanvasHeight + 10));
                     }
 
                     break;
@@ -183,10 +176,10 @@ namespace LvWpfLib
         {
             foreach (var item in this.Series)
             {
-                if (item.points != null && item.Enable)
+                if (item.HasDate() && item.Enable)
                 {
                     Pen seriesPen = new Pen(new SolidColorBrush(item.Color), item.Tickness);
-                    for (int i = 0; i < item.Points.Length - 1; i++)
+                    for (int i = 0; i < item.TransportedPoints.Length - 1; i++)
                     {
                         drawingContext.DrawLine(seriesPen, item.TransportedPoints[i], item.TransportedPoints[i + 1]);
                     }
@@ -197,7 +190,7 @@ namespace LvWpfLib
         {
             foreach (var item in series)
             {
-                if (item.points != null && item.points.Length > 0) 
+                if (item.HasDate()) 
                 {
                     return true;
                 }
@@ -217,22 +210,18 @@ namespace LvWpfLib
 
                 foreach (var item in series)
                 {
-                    if (item.points != null && item.points.Length > 0)
+                    if (item.HasDate())
                     {
-                        this.MinY = item.Points[0].Y;
+                        this.MinY = item.MinValue();
                         this.MaxY = this.MinY;
                     }
                 }
                 foreach (var item in Series)
                 {
-                    if (item.points != null)
+                    if (item.HasDate())
                     {
-                        for (int i = 0; i < item.Points.Length; i++)
-                        {
-
-                            this.minY = Math.Min(minY, item.points[i].Y);
-                            this.maxY = Math.Max(maxY, item.points[i].Y);
-                        }
+                        this.MinY = Math.Min(MinY, item.MinValue());
+                        this.MaxY = Math.Max(MaxY, item.MaxValue());
 
                     }
                 }
@@ -277,18 +266,22 @@ namespace LvWpfLib
                     case PlotType.TimePlot:
                         foreach (var item in series)
                         {
-                            if (item.points != null && item.points.Length > 0 && item is TimePlotSeries)
+                            if (item is TimePlotSeries)
                             {
-                                this.minTime = (item as TimePlotSeries).times[0];
-                                this.MaxY = this.MinY;
+                                var s = item as TimePlotSeries;
+                                if (s.HasDate())
+                                {
+                                    this.minTime = s.times[0];
+                                    this.maxTime = minTime;
+                                }
                             }
                         }
                         foreach (var item in Series)
                         {
-                            if (item.points != null && item is TimePlotSeries)
+                            if (item is TimePlotSeries && item.HasDate())
                             {
                                 var series = (item as TimePlotSeries);
-                                for (int i = 0; i < item.Points.Length; i++)
+                                for (int i = 0; i < series.times.Length; i++)
                                 {
 
                                     this.minTime = minTime <series.times[i]?minTime : series.times[i];
@@ -334,45 +327,89 @@ namespace LvWpfLib
                 graduateY[i - sy] = jgy * i;
             }
             //时间刻度
-            long x = (this.maxTime - this.minTime).Ticks * 80 / (long)(this.canvasWidth);
+            long x = (this.maxTime - this.minTime).Ticks * (long)(this.AxisGraduateX) / (long)(this.canvasWidth);
             long interval;
-            if (x < TimeSpan.FromMinutes(1).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Minute;
-                interval = TimeSpan.FromMinutes(1).Ticks;
-
-            }
-            else if (x < TimeSpan.FromMinutes(60).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Hour;
-                interval = TimeSpan.FromMinutes(60).Ticks;
-            }
-            else if (x < TimeSpan.FromHours(24).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.day;
-                interval = TimeSpan.FromDays(1).Ticks;
-            }
-            else if (x < TimeSpan.FromDays(30).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Month;
-                interval = TimeSpan.FromDays(30).Ticks;
-            }
-            else 
+            if (x > TimeSpan.FromDays(365).Ticks)
             {
                 this.timeSpanLevel = TimeSpanLevel.Year;
                 int y = (int)Math.Log10(x / TimeSpan.FromDays(365).Ticks);
                 interval = (x / (TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y)))) * TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y));
                 interval = Math.Max(interval, TimeSpan.FromDays(365).Ticks);
             }
-
-            var start = (minTime.Ticks / interval + 1)*interval;
-            int count = (int)((maxTime.Ticks - start) / interval) + 1;
-            graduateTime = new DateTime[count];
-            for (int i = 0; i < count; i++)
+            else if (x > TimeSpan.FromDays(30).Ticks)
             {
-                graduateTime[i] = new DateTime(start + interval * i);
+                this.timeSpanLevel = TimeSpanLevel.Month;
+                interval = TimeSpan.FromDays(30).Ticks;
             }
-            
+            else if (x > TimeSpan.FromDays(1).Ticks)
+            {
+                this.timeSpanLevel = TimeSpanLevel.day;
+                interval = TimeSpan.FromDays(1).Ticks;
+            }
+            else if(x>TimeSpan.FromHours(1).Ticks)
+            {
+                this.timeSpanLevel = TimeSpanLevel.Hour;
+                interval = TimeSpan.FromMinutes(60).Ticks;
+            }else //if (x > TimeSpan.FromMinutes(1).Ticks)
+            {
+                this.timeSpanLevel = TimeSpanLevel.Minute;
+                interval = TimeSpan.FromMinutes(1).Ticks;
+            }
+
+            var start = Utils.DateTimeRound(minTime, this.timeSpanLevel).Ticks;
+            var lastPositionX = -this.AxisGraduateX;
+            List<DateTime> graduateTimeX = new List<DateTime>();
+            while (start < maxTime.Ticks)
+            {
+                var positionX = canvasWidth * (start - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks);
+                if(start>minTime.Ticks && (positionX - lastPositionX) > this.AxisGraduateX)
+                {
+                    graduateTimeX.Add(new DateTime(start));
+                    lastPositionX = positionX;
+                }
+                start += interval;
+            }
+
+            this.graduateTime = graduateTimeX.ToArray();
+
+
+            //if (x < TimeSpan.FromMinutes(1).Ticks)
+            //{
+            //    this.timeSpanLevel = TimeSpanLevel.Minute;
+            //    interval = TimeSpan.FromMinutes(1).Ticks;
+
+            //}
+            //else if (x < TimeSpan.FromMinutes(60).Ticks)
+            //{
+            //    this.timeSpanLevel = TimeSpanLevel.Hour;
+            //    interval = TimeSpan.FromMinutes(60).Ticks;
+            //}
+            //else if (x < TimeSpan.FromHours(24).Ticks)
+            //{
+            //    this.timeSpanLevel = TimeSpanLevel.day;
+            //    interval = TimeSpan.FromDays(1).Ticks;
+            //}
+            //else if (x < TimeSpan.FromDays(30).Ticks)
+            //{
+            //    this.timeSpanLevel = TimeSpanLevel.Month;
+            //    interval = TimeSpan.FromDays(30).Ticks;
+            //}
+            //else 
+            //{
+            //    this.timeSpanLevel = TimeSpanLevel.Year;
+            //    int y = (int)Math.Log10(x / TimeSpan.FromDays(365).Ticks);
+            //    interval = (x / (TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y)))) * TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y));
+            //    interval = Math.Max(interval, TimeSpan.FromDays(365).Ticks);
+            //}
+
+            //var start = (minTime.Ticks / interval + 1)*interval;
+            //int count = (int)((maxTime.Ticks - start) / interval) + 1;
+            //graduateTime = new DateTime[count];
+            //for (int i = 0; i < count; i++)
+            //{
+            //    graduateTime[i] = new DateTime(start + interval * i);
+            //}
+
         }
 
 
@@ -453,6 +490,10 @@ namespace LvWpfLib
         public Point[] TransportedPoints { get => transportedPoints; set => transportedPoints = value; }
         public abstract void PointTransform(NcPlot plot);
 
+        public abstract bool HasDate();
+        public abstract double MaxValue();
+        public abstract double MinValue();
+
     }
 
     public class PlotSeries:Series
@@ -467,6 +508,34 @@ namespace LvWpfLib
             this.Name = name;
         }
 
+        public override bool HasDate()
+        {
+            return this.points != null && this.points.Length > 0;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override double MaxValue()
+        {
+            double max = this.points[0].Y;
+            for (int i = 0; i <this.points.Length; i++)
+            {
+                max = Math.Max(max, this.points[i].Y);
+            }
+            return max;
+        }
+
+        public override double MinValue()
+        {
+            double min = this.points[0].Y;
+            for (int i = 0; i < this.points.Length; i++)
+            {
+                min = Math.Min(min, this.points[i].Y);
+            }
+            return min;
+        }
 
         public override void PointTransform(NcPlot plot)
         {
@@ -505,6 +574,30 @@ namespace LvWpfLib
             this.Name = name;
         }
 
+        public override bool HasDate()
+        {
+            return this.values != null && this.times != null && this.values.Length != 0 && this.values.Length == this.times.Length;
+        }
+
+        public override double MaxValue()
+        {
+            double max = values[0];
+            for (int i = 0; i < values.Length; i++)
+            {
+                max = Math.Max(max, values[i]);
+            }
+            return max;
+        }
+
+        public override double MinValue()
+        {
+            double min = this.values[0];
+            for (int i = 0; i < this.values.Length; i++)
+            {
+                min = Math.Min(min, this.values[i]);
+            }
+            return min;
+        }
 
         public override void PointTransform(NcPlot plot)
         {
@@ -512,6 +605,7 @@ namespace LvWpfLib
             if (this.values == null || this.times == null || this.times.Length != this.values.Length ||plot.PlotType!=PlotType.TimePlot)
             {
                 this.transportedPoints = null;
+                return;
             }
             if (this.transportedPoints == null || this.transportedPoints.Length != this.values.Length)
             {
@@ -519,10 +613,10 @@ namespace LvWpfLib
             }
 
 
-            for (int i = 0; i < this.points.Length; i++)
+            for (int i = 0; i < this.values.Length; i++)
             {
                 var x = plot.LeftSpace + plot.CanvasWidth * ((double)(this.times[i].Ticks - plot.MinTime.Ticks)) / (plot.MaxTime.Ticks - plot.MinTime.Ticks);
-                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.points[i].Y - plot.MinY) / (plot.MaxY - plot.MinY));
+                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.values[i] - plot.MinY) / (plot.MaxY - plot.MinY));
                 this.transportedPoints[i] = new Point(x, y);
             }
 
