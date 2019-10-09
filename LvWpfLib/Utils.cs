@@ -56,17 +56,13 @@ namespace LvWpfLib
                     return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, dateTime.Hour, 0, 0);
                 case TimeSpanLevel.Hour:
                     return new DateTime(dateTime.Year, dateTime.Month, dateTime.Day, 0, 0, 0);
-                    break;
                 case TimeSpanLevel.day:
                     return new DateTime(dateTime.Year, dateTime.Month, 1, 0, 0, 0);
-                    break;
                 case TimeSpanLevel.Month:
                     return new DateTime(dateTime.Year, 1, 1, 0, 0, 0);
-                    break;
                 case TimeSpanLevel.Year:
                     int y = (dateTime.Year / 10) * 10;
                     return new DateTime(y,0,0,0, 0, 0);
-                    break;
                 default:
                     break;
             }

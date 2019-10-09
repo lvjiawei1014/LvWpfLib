@@ -70,12 +70,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="NcTimePlot.xaml.cs">
+      <DependentUpon>NcTimePlot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils.cs" />
     <Page Include="ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NcPlot.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NcTimePlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -88,9 +95,6 @@
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageViewElement.cs" />
-    <Compile Include="LvPlot_.cs">
-      <SubType>Code</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NcPlot.xaml.cs">
@@ -114,6 +118,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

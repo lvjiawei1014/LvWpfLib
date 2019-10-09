@@ -21,6 +21,9 @@ namespace LvWpfLib
         private double leftSpace = 40;
         private double bottomSpace = 40;
         private double rightSpace = 40;
+        
+
+        private double scale = 1.0;
 
         private double maxY = 1000;
         private double minY = 0;
@@ -28,7 +31,6 @@ namespace LvWpfLib
         private double minX = 0;
 
         private double AxisGraduateX = 60;
-
 
         private DateTime maxTime;
         private DateTime minTime;
@@ -49,7 +51,13 @@ namespace LvWpfLib
         double canvasHeight;
 
         private List<Series> series = new List<Series>();
+        private List<PlotItem> items = new List<PlotItem>();
 
+
+        /// <summary>
+        /// 图线显示模式
+        /// </summary>
+        private DisplayMode DisplayMode { get; set; } = DisplayMode.Normal;
         /// <summary>
         /// 图形标题
         /// </summary>
@@ -90,18 +98,33 @@ namespace LvWpfLib
         public double MinX { get => minX; set => minX = value; }
         public bool AutoFitX { get => autoFitX; set => autoFitX = value; }
         public bool AutoFitY { get => autoFitY; set => autoFitY = value; }
+        /// <summary>
+        /// 图线系列
+        /// </summary>
         public List<Series> Series { get => series; set => series = value; }
         public double[] GraduateX { get => graduateX; set => graduateX = value; }
         public double[] GraduateY { get => graduateY; set => graduateY = value; }
         public double CanvasWidth { get => canvasWidth; set => canvasWidth = value; }
         public double CanvasHeight { get => canvasHeight; set => canvasHeight = value; }
+        /// <summary>
+        /// 图表类型
+        /// </summary>
         public PlotType PlotType { get => plotType; set => plotType = value; }
+        /// <summary>
+        /// 时间范围最大值
+        /// </summary>
         public DateTime MaxTime { get => maxTime; set => maxTime = value; }
+        /// <summary>
+        /// 时间范围最小值
+        /// </summary>
         public DateTime MinTime { get => minTime; set => minTime = value; }
         public DateTime[] GraduateTime { get => graduateTime; set => graduateTime = value; }
         public TimeSpan TimeSpan { get => timeSpan; set => timeSpan = value; }
         public TimeSpanLevel TimeSpanLevel { get => timeSpanLevel; set => timeSpanLevel = value; }
-        public double AxisGraduateX1 { get => AxisGraduateX; set => AxisGraduateX = value; }
+        /// <summary>
+        /// 附加项目
+        /// </summary>
+        public List<PlotItem> Items { get => items; set => items = value; }
 
         public NcPlot()
         {
@@ -465,7 +488,24 @@ namespace LvWpfLib
        Month=4,
        Year=5,
     }
-
+    /// <summary>
+    /// 图线显示模式
+    /// </summary>
+    public enum DisplayMode
+    {
+        /// <summary>
+        /// 常规
+        /// </summary>
+        Normal=0,
+        /// <summary>
+        /// 归一化
+        /// </summary>
+        Normalization = 1,
+        /// <summary>
+        /// 对数处理ln
+        /// </summary>
+        NormalizationAndLogarithm = 2,
+    }
 
 
     public abstract class Series
@@ -621,5 +661,107 @@ namespace LvWpfLib
             }
 
         }
+
+        public void PointTransform(NcTimePlot plot)
+        {
+            if (this.values == null || this.times == null || this.times.Length != this.values.Length || plot.PlotType != PlotType.TimePlot)
+            {
+                this.transportedPoints = null;
+                return;
+            }
+            if (this.transportedPoints == null || this.transportedPoints.Length != this.values.Length)
+            {
+                this.transportedPoints = new Point[this.values.Length];
+            }
+
+
+            for (int i = 0; i < this.values.Length; i++)
+            {
+                var x = plot.LeftSpace + plot.CanvasWidth * ((double)(this.times[i].Ticks - plot.MinTime.Ticks)) / (plot.MaxTime.Ticks - plot.MinTime.Ticks);
+                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.values[i] - plot.MinY) / (plot.MaxY - plot.MinY));
+                this.transportedPoints[i] = new Point(x, y);
+            }
+        }
     }
+
+
+    public enum AnchorDirection
+    {
+        AnchorX=0,
+        AnchorY=1,
+        AnchorZ=2,
+    }
+
+    public enum RegionDirection
+    {
+        RegionX=0,
+        RegionY=1,
+        RegionZ=2,
+    }
+
+    public enum Axis
+    {
+        X=0,
+        Y=1,
+        Z=1,
+    }
+
+    public abstract class PlotItem
+    {
+        private string name = "";
+
+        public string Name { get => name; set => name = value; }
+    }
+
+    public class Anchor :PlotItem{
+        private AnchorDirection anchorType=AnchorDirection.AnchorX;
+        public AnchorDirection AnchorType { get => anchorType; set => anchorType = value; }
+    }
+
+    public class TimeAnchor : Anchor
+    {
+        private Color color;
+        
+        private DateTime value;
+
+        
+        public DateTime Value { get => value; set => this.value = value; }
+        public Color Color { get => color; set => color = value; }
+
+        public TimeAnchor()
+        {
+            Color = Colors.Black;
+            Value = DateTime.Now;
+        }
+        public TimeAnchor(DateTime time)
+        {
+            Color = Colors.Black;
+            Value = time;
+        }
+    }
+    /// <summary>
+    /// 区间
+    /// </summary>
+    public class Region : PlotItem
+    {
+        private RegionDirection regionType = RegionDirection.RegionX;
+    }
+
+    public class TimeRegion : Region
+    {
+        private TimeAnchor anchorStart;
+        private TimeAnchor anchorEnd;
+        Color Color;
+        public TimeRegion(DateTime start,DateTime end)
+        {
+            anchorEnd = new TimeAnchor(end);
+            anchorStart = new TimeAnchor(start);
+        }
+    }
+
+
+
+
+
+
 }

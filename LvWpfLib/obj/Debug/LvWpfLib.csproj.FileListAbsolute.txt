@@ -97,6 +97,5 @@ E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\Themes\Generic.baml
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.g.resources
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.Properties.Resources.resources
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.csproj.GenerateResource.cache
-E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.csproj.CoreCompileInputs.cache
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.dll
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.pdb

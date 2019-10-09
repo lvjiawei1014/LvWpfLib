@@ -1,0 +1,355 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio\2019\community\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="16.0">
+ <Targets>
+  <Target Name="E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\x86\Release\LvWpfLib.dll">
+   <Modules>
+    <Module Name="lvwpflib.dll">
+     <Namespaces>
+      <Namespace Name="LvWpfLib">
+       <Types>
+        <Type Name="NcPlot" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#root" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="AvoidExcessiveComplexity" Category="Microsoft.Maintainability" CheckId="CA1502" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+            <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+            <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="LvWpfLib.LvImageView">
+       <Types>
+        <Type Name="DisplayItem" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ElementDeleteEventHandler" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="First" Certainty="95" Level="Error">将 'DisplayItem.ElementDeleteEvent' 的第一个参数声明为一个名为“sender”的对象。</Issue>
+             <Issue Name="Second" Certainty="95" Level="Error">将 'DisplayItem.ElementDeleteEvent' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="ImageView" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ibEllipse" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#ibPolygon" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#ibRect" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#rbColorBlue" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#rbColorGreen" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#rbColorPurple" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#rbColorRed" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#rbColorWhite" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#rbColorYellow" Kind="Field" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="AvoidExcessiveComplexity" Category="Microsoft.Maintainability" CheckId="CA1502" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+            <Message TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+            <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+          <Member Name="#ElementCreateEventHandler" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="First" Certainty="95" Level="Error">将 'ImageView.ElementCreateEvent' 的第一个参数声明为一个名为“sender”的对象。</Issue>
+             <Issue Name="Second" Certainty="95" Level="Error">将 'ImageView.ElementCreateEvent' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#ElementDeleteEventHandler" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="First" Certainty="95" Level="Error">将 'ImageView.ElementDeleteEvent' 的第一个参数声明为一个名为“sender”的对象。</Issue>
+             <Issue Name="Second" Certainty="95" Level="Error">将 'ImageView.ElementDeleteEvent' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="ImageViewElement" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#OnElementChangeDoneEvent" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">将 'ImageViewElement.ElementChangeDone' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#OnElementChangeEvent" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">将 'ImageViewElement.ElementChange' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#OnElementDelete" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="Second" Certainty="95" Level="Error">将 'ImageViewElement.ElementDelete' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="KeyPoint" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#KeyPointChangeEventHandler" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="First" Certainty="95" Level="Error">将 'KeyPoint.KeyPointChangeEvent' 的第一个参数声明为一个名为“sender”的对象。</Issue>
+             <Issue Name="Second" Certainty="95" Level="Error">将 'KeyPoint.KeyPointChangeEvent' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+             <Issue Name="TooMany" Certainty="95" Level="Error">移除 'KeyPoint.KeyPointChangeEvent' 的除前两个参数以外的所有参数。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="RectElement" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#.ctor(System.Double,System.Double,System.Double,System.Double)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="424">'RectElement.RectElement(double, double, double, double)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;RectElement..ctor(Double, Double, Double, Double)&#xD;&#xA;KeyPointElement.set_KeyPointAmount(Int32):Void&#xD;&#xA;ImageViewElement.set_ElementCursor(Cursor):Void&#xD;&#xA;ImageViewElement.set_X(Double):Void。</Issue>
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="424">'RectElement.RectElement(double, double, double, double)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;RectElement..ctor(Double, Double, Double, Double)&#xD;&#xA;KeyPointElement.set_KeyPointAmount(Int32):Void&#xD;&#xA;ImageViewElement.set_ElementCursor(Cursor):Void&#xD;&#xA;ImageViewElement.set_X(Double):Void&#xD;&#xA;ImageViewElement.set_Y(Double):Void。</Issue>
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="424">'RectElement.RectElement(double, double, double, double)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;RectElement..ctor(Double, Double, Double, Double)&#xD;&#xA;KeyPointElement.set_KeyPointAmount(Int32):Void&#xD;&#xA;ImageViewElement.set_ElementCursor(Cursor):Void&#xD;&#xA;ImageViewElement.set_X(Double):Void&#xD;&#xA;ImageViewElement.set_Y(Double):Void&#xD;&#xA;ImageViewElement.set_Z(Double):Void。</Issue>
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="424">'RectElement.RectElement(double, double, double, double)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;RectElement..ctor(Double, Double, Double, Double)&#xD;&#xA;KeyPointElement.set_KeyPointAmount(Int32):Void&#xD;&#xA;ImageViewElement.set_ElementCursor(Cursor):Void&#xD;&#xA;ImageViewElement.set_X(Double):Void&#xD;&#xA;ImageViewElement.set_Y(Double):Void&#xD;&#xA;ImageViewElement.set_Z(Double):Void&#xD;&#xA;ImageViewElement.set_Width(Double):Void。</Issue>
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="424">'RectElement.RectElement(double, double, double, double)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;RectElement..ctor(Double, Double, Double, Double)&#xD;&#xA;KeyPointElement.set_KeyPointAmount(Int32):Void&#xD;&#xA;ImageViewElement.set_ElementCursor(Cursor):Void&#xD;&#xA;ImageViewElement.set_X(Double):Void&#xD;&#xA;ImageViewElement.set_Y(Double):Void&#xD;&#xA;ImageViewElement.set_Z(Double):Void&#xD;&#xA;ImageViewElement.set_Width(Double):Void&#xD;&#xA;ImageViewElement.set_Height(Double):Void。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#keyPoint1" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error">字段 'RectElement.keyPoint1' 是可序列化的类型 'RectElement' 的成员，但该字段的类型是不可序列化的 'KeyPoint'。请向 'RectElement.keyPoint1' 添加 NonSerializedAttribute 特性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#keyPoint2" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error">字段 'RectElement.keyPoint2' 是可序列化的类型 'RectElement' 的成员，但该字段的类型是不可序列化的 'KeyPoint'。请向 'RectElement.keyPoint2' 添加 NonSerializedAttribute 特性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#leftBottomPoint" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error">字段 'RectElement.leftBottomPoint' 是可序列化的类型 'RectElement' 的成员，但该字段的类型是不可序列化的 'TractionPoint'。请向 'RectElement.leftBottomPoint' 添加 NonSerializedAttribute 特性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#leftTopPoint" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error">字段 'RectElement.leftTopPoint' 是可序列化的类型 'RectElement' 的成员，但该字段的类型是不可序列化的 'TractionPoint'。请向 'RectElement.leftTopPoint' 添加 NonSerializedAttribute 特性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#rightBottomPoint" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error">字段 'RectElement.rightBottomPoint' 是可序列化的类型 'RectElement' 的成员，但该字段的类型是不可序列化的 'TractionPoint'。请向 'RectElement.rightBottomPoint' 添加 NonSerializedAttribute 特性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#rightTopPoint" Kind="Field" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error">字段 'RectElement.rightTopPoint' 是可序列化的类型 'RectElement' 的成员，但该字段的类型是不可序列化的 'TractionPoint'。请向 'RectElement.rightTopPoint' 添加 NonSerializedAttribute 特性。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="TractionPoint" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#.ctor(System.Double,System.Double,LvWpfLib.LvImageView.ImageViewElement)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="171">'TractionPoint.TractionPoint(double, double, ImageViewElement)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;TractionPoint..ctor(Double, Double, ImageViewElement)&#xD;&#xA;ImageViewElement.set_X(Double):Void。</Issue>
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="171">'TractionPoint.TractionPoint(double, double, ImageViewElement)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;TractionPoint..ctor(Double, Double, ImageViewElement)&#xD;&#xA;ImageViewElement.set_X(Double):Void&#xD;&#xA;ImageViewElement.set_Y(Double):Void。</Issue>
+             <Issue Certainty="95" Level="CriticalWarning" Path="E:\Project\GitHub\LvWpfLib\LvWpfLib" File="ImageViewElement.cs" Line="171">'TractionPoint.TractionPoint(double, double, ImageViewElement)' 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: &#xD;&#xA;&#xD;&#xA;TractionPoint..ctor(Double, Double, ImageViewElement)&#xD;&#xA;ImageViewElement.set_X(Double):Void&#xD;&#xA;ImageViewElement.set_Y(Double):Void&#xD;&#xA;ImageViewElement.set_Parent(ImageViewElement):Void&#xD;&#xA;ImageViewElement.set_Z(Double):Void。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#OnTractionEventHandler" Kind="Event" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009" Status="Active" Created="2019-09-30 08:41:57Z" FixCategory="Breaking">
+             <Issue Name="First" Certainty="95" Level="Error">将 'TractionPoint.TractionEvent' 的第一个参数声明为一个名为“sender”的对象。</Issue>
+             <Issue Name="Second" Certainty="95" Level="Error">将 'TractionPoint.TractionEvent' 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Issue>
+             <Issue Name="TooMany" Certainty="95" Level="Error">移除 'TractionPoint.TractionEvent' 的除前两个参数以外的所有参数。</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="LvWpfLib.Properties">
+       <Types>
+        <Type Name="Resources" Kind="Class" Accessibility="Assembly" ExternallyVisible="False">
+         <Members>
+          <Member Name="#.ctor()" Kind="Method" Static="False" Accessibility="Assembly" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="ExcludedInSource" Created="2019-09-30 08:41:57Z" FixCategory="NonBreaking" LastSeen="0001-01-01 00:00:00Z" />
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="AvoidExcessiveComplexity" Category="Microsoft.Maintainability" CheckId="CA1502">
+   <Name>避免过度复杂</Name>
+   <Description>过于复杂的方法实现会增加理解和维护代码的难度。</Description>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182212.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="90">Warning</MessageLevel>
+   <File Name="maintainabilityrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+   <Name>避免使用未调用的私有代码</Name>
+   <Description>存在对外部不可见的未调用代码，该代码不是已知的运行时入口点。如果错误地引发此冲突，请向 Visual Studio 代码分析团队发送问题报告。</Description>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182264.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+   <Name>避免未使用的私有字段</Name>
+   <Description>检测到程序集内有似乎未访问过的私有字段。如果错误地引发了此冲突，请向 Visual Studio 代码分析团队发送问题报告。</Description>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms245042.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="DeclareEventHandlersCorrectly" Category="Microsoft.Design" CheckId="CA1009">
+   <Name>正确声明事件处理程序</Name>
+   <Description>按照约定，.NET 事件有两个参数，分别用于指定事件发送方和事件数据。事件处理程序签名应遵循以下形式: void MyEventHandler(object sender, EventArgs e)。“sender”参数的类型始终是 System.Object，即使该参数可能使用更具体的类型。“e”参数的类型始终是 System.EventArgs。不提供事件数据的事件应使用 System.EventHandler 委托类型。事件处理程序返回 void 以便将每个事件发送给多个目标方法。目标返回的任何值在第一次调用之后将会丢失。</Description>
+   <Resolution Name="First">将 {0} 的第一个参数声明为一个名为“sender”的对象。</Resolution>
+   <Resolution Name="Second">将 {0} 的第二个参数声明为 EventArgs，或者声明为扩展 EventArgs 的类型的名为“e”的实例。</Resolution>
+   <Resolution Name="TooMany">移除 {0} 的除前两个参数以外的所有参数。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182133.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="designrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+   <Name>不要在构造函数中调用可重写的方法</Name>
+   <Description>不应通过构造函数调用类中定义的虚方法。如果某个派生类已重写该虚方法，则将在调用派生类的构造函数前，调用此派生类重写后的方法。</Description>
+   <Resolution Name="Default">{0} 包含调用链，该调用链导致调用此类所定义的虚方法。请检查以下调用堆栈，看是否有意外结果: {1}。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182331.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalWarning</MessageLevel>
+   <File Name="usagerules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotCastUnnecessarily" Category="Microsoft.Performance" CheckId="CA1800">
+   <Name>避免进行不必要的强制转换</Name>
+   <Description>由于进行强制转换会产生相关的开销，因此请尽可能避免重复强制转换。</Description>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182271.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033">
+   <Name>接口方法应可由子类型调用</Name>
+   <Description>定义的显式方法实现具有私有可访问性。除非基类提供了具有相应可访问性的备用方法，否则从具有显式方法实现的类派生，并选择在类中重新声明它们的类不能调入基类实现。如果重写的基类方法已被显式接口实现所隐藏，则为了调入基类实现，派生类必须将基指针强制转换为相关接口。但是，通过此引用调用基类实现时，实际调用的将是派生类实现，这会导致递归调用，并最终导致堆栈溢出。</Description>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182153.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="designrules.dll" Version="16.0.0.0" />
+  </Rule>
+  <Rule TypeName="MarkAllNonSerializableFields" Category="Microsoft.Usage" CheckId="CA2235">
+   <Name>标记所有不可序列化的字段</Name>
+   <Description>所有无法直接序列化的字段都应具有 NonSerializedAttribute 特性。对于具有 SerializableAttribute 特性的类型，都不应包含没有 SerializableAttribute 特性的类型字段，除非这些字段用 NonSerializedAttribute 进行了标记。</Description>
+   <Resolution Name="Default">字段 {0} 是可序列化的类型 {1} 的成员，但该字段的类型是不可序列化的 {2}。请向 {0} 添加 NonSerializedAttribute 特性。</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182349.aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="usagerules.dll" Version="16.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">类别</String>
+  <String Key="Certainty">确定性</String>
+  <String Key="CollapseAll">全部折叠</String>
+  <String Key="CheckId">检查 ID</String>
+  <String Key="Error">错误</String>
+  <String Key="Errors">错误</String>
+  <String Key="ExpandAll">全部展开</String>
+  <String Key="Help">帮助</String>
+  <String Key="Line">行</String>
+  <String Key="Messages">消息</String>
+  <String Key="LocationNotStoredInPdb">[位置未存储在 Pdb 中]</String>
+  <String Key="Project">项目</String>
+  <String Key="Resolution">解析</String>
+  <String Key="Rule">规则</String>
+  <String Key="RuleFile">规则文件</String>
+  <String Key="RuleDescription">规则说明</String>
+  <String Key="Source">源</String>
+  <String Key="Status">状态</String>
+  <String Key="Target">目标</String>
+  <String Key="Warning">警告</String>
+  <String Key="Warnings">警告</String>
+  <String Key="ReportTitle">代码分析报告</String>
+ </Localized>
+</FxCopReport>
