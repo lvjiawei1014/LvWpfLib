@@ -21,7 +21,7 @@ namespace LvWpfLib
         private double leftSpace = 40;
         private double bottomSpace = 40;
         private double rightSpace = 40;
-        
+
 
         private double scale = 1.0;
 
@@ -169,9 +169,9 @@ namespace LvWpfLib
                 case PlotType.TimePlot:
                     for (int i = 0; i < graduateTime.Length; i++)
                     {
-                        x = leftSpace + CanvasWidth *( (double)(graduateTime[i].Ticks - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks));
+                        x = leftSpace + CanvasWidth * ((double)(graduateTime[i].Ticks - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks));
                         drawingContext.DrawLine(AxisPen, new Point(x, topSpace + CanvasHeight), new Point(x, topSpace + CanvasHeight - 4));
-                        FormattedText graduateText = new FormattedText(Utils.GetTimeLabel(graduateTime[i],this.timeSpanLevel), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("宋体"), this.FontSize, this.Foreground);
+                        FormattedText graduateText = new FormattedText(Utils.GetTimeLabel(graduateTime[i], this.timeSpanLevel), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("宋体"), this.FontSize, this.Foreground);
                         drawingContext.DrawText(graduateText, new Point(x - graduateText.Width / 2, topSpace + CanvasHeight + 10));
                     }
 
@@ -180,7 +180,7 @@ namespace LvWpfLib
                     break;
             }
 
-            
+
 
             for (int i = 0; i < graduateY.Length; i++)
             {
@@ -213,7 +213,7 @@ namespace LvWpfLib
         {
             foreach (var item in series)
             {
-                if (item.HasDate()) 
+                if (item.HasDate())
                 {
                     return true;
                 }
@@ -254,7 +254,7 @@ namespace LvWpfLib
                 }
             }
             //x轴自适应
-            if(AutoFitY && this.Series.Count > 0 && this.HasData())
+            if (AutoFitY && this.Series.Count > 0 && this.HasData())
             {
                 switch (this.PlotType)
                 {
@@ -307,7 +307,7 @@ namespace LvWpfLib
                                 for (int i = 0; i < series.times.Length; i++)
                                 {
 
-                                    this.minTime = minTime <series.times[i]?minTime : series.times[i];
+                                    this.minTime = minTime < series.times[i] ? minTime : series.times[i];
                                     this.maxTime = maxTime > series.times[i] ? maxTime : series.times[i];
                                 }
 
@@ -369,11 +369,12 @@ namespace LvWpfLib
                 this.timeSpanLevel = TimeSpanLevel.day;
                 interval = TimeSpan.FromDays(1).Ticks;
             }
-            else if(x>TimeSpan.FromHours(1).Ticks)
+            else if (x > TimeSpan.FromHours(1).Ticks)
             {
                 this.timeSpanLevel = TimeSpanLevel.Hour;
                 interval = TimeSpan.FromMinutes(60).Ticks;
-            }else //if (x > TimeSpan.FromMinutes(1).Ticks)
+            }
+            else //if (x > TimeSpan.FromMinutes(1).Ticks)
             {
                 this.timeSpanLevel = TimeSpanLevel.Minute;
                 interval = TimeSpan.FromMinutes(1).Ticks;
@@ -385,7 +386,7 @@ namespace LvWpfLib
             while (start < maxTime.Ticks)
             {
                 var positionX = canvasWidth * (start - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks);
-                if(start>minTime.Ticks && (positionX - lastPositionX) > this.AxisGraduateX)
+                if (start > minTime.Ticks && (positionX - lastPositionX) > this.AxisGraduateX)
                 {
                     graduateTimeX.Add(new DateTime(start));
                     lastPositionX = positionX;
@@ -476,17 +477,17 @@ namespace LvWpfLib
 
     public enum PlotType
     {
-        Plane=0,
-        TimePlot=1,
+        Plane = 0,
+        TimePlot = 1,
     }
 
     public enum TimeSpanLevel
     {
-       Minute=1,
-       Hour=2,
-       day=3,
-       Month=4,
-       Year=5,
+        Minute = 1,
+        Hour = 2,
+        day = 3,
+        Month = 4,
+        Year = 5,
     }
     /// <summary>
     /// 图线显示模式
@@ -496,7 +497,7 @@ namespace LvWpfLib
         /// <summary>
         /// 常规
         /// </summary>
-        Normal=0,
+        Normal = 0,
         /// <summary>
         /// 归一化
         /// </summary>
@@ -536,10 +537,10 @@ namespace LvWpfLib
 
     }
 
-    public class PlotSeries:Series
+    public class PlotSeries : Series
     {
-        
-        
+
+
 
         public PlotSeries(string name, Color color, double tickness)
         {
@@ -560,7 +561,7 @@ namespace LvWpfLib
         public override double MaxValue()
         {
             double max = this.points[0].Y;
-            for (int i = 0; i <this.points.Length; i++)
+            for (int i = 0; i < this.points.Length; i++)
             {
                 max = Math.Max(max, this.points[i].Y);
             }
@@ -603,8 +604,10 @@ namespace LvWpfLib
 
     public class TimePlotSeries : Series
     {
-        public double[] values;
+        public DisplayMode DisplayMode { get; protected set; } = DisplayMode.Normal;
 
+        private double[] tmpValues;
+        public double[] rawValues;
         public DateTime[] times;
 
         public TimePlotSeries(string name, Color color, double tickness)
@@ -616,25 +619,45 @@ namespace LvWpfLib
 
         public override bool HasDate()
         {
-            return this.values != null && this.times != null && this.values.Length != 0 && this.values.Length == this.times.Length;
+            return this.tmpValues != null && this.times != null && this.tmpValues.Length != 0 && this.tmpValues.Length == this.times.Length;
+        }
+
+        public double MaxRawValue()
+        {
+            double max = rawValues[0];
+            for (int i = 0; i < rawValues.Length; i++)
+            {
+                max = Math.Max(max, rawValues[i]);
+            }
+            return max;
+        }
+
+        public double MinRawValue()
+        {
+            double min = this.rawValues[0];
+            for (int i = 0; i < this.rawValues.Length; i++)
+            {
+                min = Math.Min(min, this.rawValues[i]);
+            }
+            return min;
         }
 
         public override double MaxValue()
         {
-            double max = values[0];
-            for (int i = 0; i < values.Length; i++)
+            double max = tmpValues[0];
+            for (int i = 0; i < tmpValues.Length; i++)
             {
-                max = Math.Max(max, values[i]);
+                max = Math.Max(max, tmpValues[i]);
             }
             return max;
         }
 
         public override double MinValue()
         {
-            double min = this.values[0];
-            for (int i = 0; i < this.values.Length; i++)
+            double min = this.tmpValues[0];
+            for (int i = 0; i < this.tmpValues.Length; i++)
             {
-                min = Math.Min(min, this.values[i]);
+                min = Math.Min(min, this.tmpValues[i]);
             }
             return min;
         }
@@ -642,21 +665,21 @@ namespace LvWpfLib
         public override void PointTransform(NcPlot plot)
         {
 
-            if (this.values == null || this.times == null || this.times.Length != this.values.Length ||plot.PlotType!=PlotType.TimePlot)
+            if (this.tmpValues == null || this.times == null || this.times.Length != this.tmpValues.Length || plot.PlotType != PlotType.TimePlot)
             {
                 this.transportedPoints = null;
                 return;
             }
-            if (this.transportedPoints == null || this.transportedPoints.Length != this.values.Length)
+            if (this.transportedPoints == null || this.transportedPoints.Length != this.tmpValues.Length)
             {
-                this.transportedPoints = new Point[this.values.Length];
+                this.transportedPoints = new Point[this.tmpValues.Length];
             }
 
 
-            for (int i = 0; i < this.values.Length; i++)
+            for (int i = 0; i < this.tmpValues.Length; i++)
             {
                 var x = plot.LeftSpace + plot.CanvasWidth * ((double)(this.times[i].Ticks - plot.MinTime.Ticks)) / (plot.MaxTime.Ticks - plot.MinTime.Ticks);
-                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.values[i] - plot.MinY) / (plot.MaxY - plot.MinY));
+                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.tmpValues[i] - plot.MinY) / (plot.MaxY - plot.MinY));
                 this.transportedPoints[i] = new Point(x, y);
             }
 
@@ -664,46 +687,112 @@ namespace LvWpfLib
 
         public void PointTransform(NcTimePlot plot)
         {
-            if (this.values == null || this.times == null || this.times.Length != this.values.Length || plot.PlotType != PlotType.TimePlot)
+            if (this.tmpValues == null || this.times == null || this.times.Length != this.tmpValues.Length)
             {
                 this.transportedPoints = null;
                 return;
             }
-            if (this.transportedPoints == null || this.transportedPoints.Length != this.values.Length)
+            if (this.transportedPoints == null || this.transportedPoints.Length != this.tmpValues.Length)
             {
-                this.transportedPoints = new Point[this.values.Length];
+                this.transportedPoints = new Point[this.tmpValues.Length];
             }
 
 
-            for (int i = 0; i < this.values.Length; i++)
+            for (int i = 0; i < this.tmpValues.Length; i++)
             {
                 var x = plot.LeftSpace + plot.CanvasWidth * ((double)(this.times[i].Ticks - plot.MinTime.Ticks)) / (plot.MaxTime.Ticks - plot.MinTime.Ticks);
-                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.values[i] - plot.MinY) / (plot.MaxY - plot.MinY));
+                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.tmpValues[i] - plot.MinY) / (plot.MaxY - plot.MinY));
                 this.transportedPoints[i] = new Point(x, y);
             }
+        }
+        /// <summary>
+        /// 设定显示模式
+        /// </summary>
+        /// <param name="displayMode"></param>
+        public void SetDisplayMode(DisplayMode displayMode)
+        {
+            this.DisplayMode = displayMode;
+            ProcessData();
+        }
+        /// <summary>
+        /// 并生成中间数据
+        /// </summary>
+        public void ProcessData()
+        {
+            if (rawValues == null ||rawValues.Length==0) return;
+
+            if (tmpValues == null || tmpValues.Length != rawValues.Length)
+            {
+                this.tmpValues = new double[rawValues.Length];
+            }
+            var max = this.MaxRawValue();
+            var min = this.MinRawValue();
+            var tmp = Math.Max(Math.Abs(max), Math.Abs(min));
+
+            switch (this.DisplayMode)
+            {
+                case DisplayMode.Normal:
+                    //this.tmpValues = rawValues;
+                    for (int i = 0; i < rawValues.Length; i++)
+                    {
+                        tmpValues[i] = rawValues[i];
+                    }
+                    break;
+                case DisplayMode.Normalization:
+
+                    for (int i = 0; i < rawValues.Length; i++)
+                    {
+                        tmpValues[i] = rawValues[i] / tmp;
+                    }
+
+                    break;
+                case DisplayMode.NormalizationAndLogarithm:
+                    var l = Math.Log(tmp);
+                    for (int i = 0; i < rawValues.Length; i++)
+                    {
+                        var factor = rawValues[i] > 0 ? 1.0 : -1.0;
+                        tmpValues[i] = factor * Math.Log(factor * rawValues[i]+1) / l;
+                    }
+
+                    break;
+                default:
+                    break;
+            }
+        }
+        /// <summary>
+        /// 导入数据
+        /// </summary>
+        /// <param name="time"></param>
+        /// <param name="values"></param>
+        public void SetData(DateTime[] time, double[] values,DisplayMode displayMode)
+        {
+            this.rawValues = (double[])values.Clone();
+            this.times = (DateTime[])time.Clone();
+            this.DisplayMode = displayMode;
+            this.ProcessData();
         }
     }
 
 
     public enum AnchorDirection
     {
-        AnchorX=0,
-        AnchorY=1,
-        AnchorZ=2,
+        AnchorX = 0,
+        AnchorY = 1,
+        AnchorZ = 2,
     }
 
     public enum RegionDirection
     {
-        RegionX=0,
-        RegionY=1,
-        RegionZ=2,
+        RegionX = 0,
+        RegionY = 1,
+        RegionZ = 2,
     }
 
     public enum Axis
     {
-        X=0,
-        Y=1,
-        Z=1,
+        X = 0,
+        Y = 1,
+        Z = 1,
     }
 
     public abstract class PlotItem
@@ -713,18 +802,19 @@ namespace LvWpfLib
         public string Name { get => name; set => name = value; }
     }
 
-    public class Anchor :PlotItem{
-        private AnchorDirection anchorType=AnchorDirection.AnchorX;
+    public class Anchor : PlotItem
+    {
+        private AnchorDirection anchorType = AnchorDirection.AnchorX;
         public AnchorDirection AnchorType { get => anchorType; set => anchorType = value; }
     }
 
     public class TimeAnchor : Anchor
     {
         private Color color;
-        
+
         private DateTime value;
 
-        
+
         public DateTime Value { get => value; set => this.value = value; }
         public Color Color { get => color; set => color = value; }
 
@@ -752,7 +842,7 @@ namespace LvWpfLib
         private TimeAnchor anchorStart;
         private TimeAnchor anchorEnd;
         Color Color;
-        public TimeRegion(DateTime start,DateTime end)
+        public TimeRegion(DateTime start, DateTime end)
         {
             anchorEnd = new TimeAnchor(end);
             anchorStart = new TimeAnchor(start);

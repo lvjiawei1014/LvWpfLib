@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace LvWpfLib
 {
@@ -69,5 +70,16 @@ namespace LvWpfLib
             return dateTime;
         }
 
+    }
+
+    public class ImageMouseMoveEventArgs
+    {
+        private Point location;
+
+        public Point Location { get => location; set => location = value; }
+
+        public ImageMouseMoveEventArgs()
+        {
+        }
     }
 }

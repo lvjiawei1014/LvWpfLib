@@ -21,6 +21,11 @@ namespace LvWpfLib.LvImageView
     /// </summary>
     public partial class ImageView : UserControl
     {
+        #region 事件
+        public delegate void ImageMouseMoveHandler(object sender, ImageMouseMoveEventArgs imageMouseMoveEventArgs);
+        public event ImageMouseMoveHandler ImageMouseMove;
+        #endregion
+
         #region 静态成员
         private static float MaxScale = 10f;
         private static float MinScale = 0.1f;
@@ -282,12 +287,12 @@ namespace LvWpfLib.LvImageView
                 AddRectangle(element as RectElement);
                 return;
             }
-            //if (element is Line)
-            //{
-            //    AddLine(element as Line);
-            //    return;
+            if (element is LineElement)
+            {
+                AddLine(element as LineElement);
+                return;
 
-            //}
+            }
             if (element is PolygonElement)
             {
                 AddPolypon(element as PolygonElement);
@@ -297,16 +302,19 @@ namespace LvWpfLib.LvImageView
             //    AddEllipse(element as EllipseElement);
             //}
         }
-        //public void AddLine(Line line)
-        //{
-        //    line.ParentCoordinate = imageElement.coordinate;
-        //    line.ParentElement = imageElement;
-        //    elements.Add(line);
-        //    baseElements.Add(line);
-        //    baseElements.Add(line.TractionPoints[0]);
-        //    baseElements.Add(line.TractionPoints[1]);
-        //    baseElements.Sort();
-        //}
+        public void AddLine(LineElement line)
+        {
+            line.GlobalCoordinate = imageElement.Coordinate;
+            line.Parent = imageElement;
+            elements.Add(line);
+            baseElements.Add(line);
+            for (int i = 0; i < line.keyPointList.Count; i++)
+            {
+                baseElements.Add(line.keyPointList[i].TractionPoint);
+            }
+            baseElements.Sort();
+            this.InvalidateVisual();
+        }
         public void AddPolypon(PolygonElement polygon)
         {
             polygon.GlobalCoordinate = imageElement.Coordinate;
@@ -408,9 +416,9 @@ namespace LvWpfLib.LvImageView
                     break;
                 case ElementType.Point:
                     break;
-                //case ElementType.Line:
-                //    this.drawingElement = new Line();
-                //    break;
+                case ElementType.Line:
+                    this.drawingElement = new LineElement();
+                    break;
                 case ElementType.Rectangle:
                     this.drawingElement = new RectElement();
                     break;
@@ -466,6 +474,7 @@ namespace LvWpfLib.LvImageView
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
             Point p = Coordinate.CoordinateTransport(e.GetPosition(this), Coordinate.BaseCoornidate, imageElement.Coordinate);
+            this.ImageMouseMove?.Invoke(this, new ImageMouseMoveEventArgs() { Location = p });
             ImageViewElement targetElement = this.GetTargetElement(p.X, p.Y);
             pointedElement = targetElement;
             if (ImageViewState == ImageViewState.Normal)
@@ -522,6 +531,8 @@ namespace LvWpfLib.LvImageView
                 }
                 return;
             }
+
+
         }
 
         private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -607,6 +618,7 @@ namespace LvWpfLib.LvImageView
                 System.Console.WriteLine("operationStartImagePoint:" + operationStartImagePoint.X + "  " + operationStartImagePoint.Y);
                 this.SelectElement(operatedElement);
             }
+
         }
 
         private void UserControl_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -644,6 +656,10 @@ namespace LvWpfLib.LvImageView
             {
                 case "DrawRect":
                     this.CreateElement(ElementType.Rectangle);
+                    break;
+
+                case "DrawLine":
+                    this.CreateElement(ElementType.Line);
                     break;
                 case "EditMode":
                     this.ImageViewState = ImageViewState.Edit;

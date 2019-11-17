@@ -83,22 +83,17 @@ namespace LvWpfLib.LvGeometry
             return c;
 
         }
+
+        public static bool PointInLine(double x,double y,List<Point> line)
+        {
+            return false;
+            if(line==null || line.Count != 2)
+            {
+                return false;
+            }
+
+        }
     }
 
-
-    //public struct Point
-    //{
-    //    public Point(double x,double y)
-    //    {
-    //        X = x;
-    //        Y = y;
-    //    }
-
-    //    public double X { get; set; }
-    //    public double Y { get; set; }
-
-
-
-    //}
 
 }

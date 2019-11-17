@@ -1,11 +1,8 @@
 E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\x86\Release\LvWpfLib.dll
 E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\x86\Release\LvWpfLib.pdb
-E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\x86\Release\LvWpfLib.dll.CodeAnalysisLog.xml
-E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\x86\Release\LvWpfLib.dll.lastcodeanalysissucceeded
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib.csprojAssemblyReference.cache
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\ImageView.g.cs
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\NcPlot.g.cs
-E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\GeneratedInternalTypeHelper.g.cs
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib_MarkupCompile.cache
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib_MarkupCompile.lref
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\ImageView.baml
@@ -16,3 +13,5 @@ E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib.Properties.Resource
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib.csproj.GenerateResource.cache
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib.dll
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\LvWpfLib.pdb
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\NcTimePlot.g.cs
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\x86\Release\NcTimePlot.baml

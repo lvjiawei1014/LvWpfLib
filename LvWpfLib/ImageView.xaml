@@ -52,6 +52,7 @@
             <MenuItem x:Name="EditMode" Header="编辑模式" Click="MenuItem_Click"/>
             <Separator/>
             <MenuItem x:Name="DrawRect" Header="绘制矩形" Click="MenuItem_Click"/>
+            <MenuItem x:Name="DrawLine" Header="绘制线段" Click="MenuItem_Click"/>
             <Separator/>
             <MenuItem x:Name="AutoFit" Header="自适应窗口" Click="MenuItem_Click"/>
             <MenuItem x:Name="DisableAutoFit" Header="取消适应窗口" Click="MenuItem_Click"/>

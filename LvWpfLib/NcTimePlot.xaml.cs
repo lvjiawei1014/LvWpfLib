@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace LvWpfLib
 {
@@ -24,8 +15,8 @@ namespace LvWpfLib
         public NcTimePlot()
         {
             InitializeComponent();
-            this.DataContext = this;
-            RefreshData();
+            timePlot.DataContext = this;
+            UpdateDisplay();
         }
 
         private string plotTitle = "Plot";
@@ -42,10 +33,11 @@ namespace LvWpfLib
         private double scale = 1.0;
         private double defaultMaxY = 1000;
         private double defaultMinY = 0;
-        //private 
+        private DateTime defaultMaxTime;
+        private DateTime defaultMinTime;
 
 
-        private double AxisGraduateX = 60;
+        private double axisGraduateX = 60;
 
         private DateTime maxTime;
         private DateTime minTime;
@@ -68,7 +60,7 @@ namespace LvWpfLib
         private List<TimePlotSeries> series = new List<TimePlotSeries>();
         private List<PlotItem> items = new List<PlotItem>();
 
-
+        #region 属性
         /// <summary>
         /// 图线显示模式
         /// </summary>
@@ -136,12 +128,24 @@ namespace LvWpfLib
         public List<PlotItem> Items { get => items; set => items = value; }
         public double MaxY { get => maxY; set => maxY = value; }
         public double MinY { get => minY; set => minY = value; }
-
+        /// <summary>
+        /// X轴坐标间隔距离
+        /// </summary>
+        public double AxisGraduateX { get => axisGraduateX; set => axisGraduateX = value; }
+        public DateTime DefaultMaxTime { get => defaultMaxTime; set => defaultMaxTime = value; }
+        public DateTime DefaultMinTime { get => defaultMinTime; set => defaultMinTime = value; }
+        #endregion
+        #region 绘图
 
         protected override void OnRender(DrawingContext drawingContext)
         {
 
             base.OnRender(drawingContext);
+
+            //DrawingBrush tileBack = (DrawingBrush)this.Resources["TileBack"];
+            SolidColorBrush colorBrush = (SolidColorBrush)this.Resources["ColorBack"];
+            drawingContext.DrawRectangle(colorBrush, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
+
             FormattedText title = new FormattedText(this.PlotTitle, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("黑体"), this.FontSize + 4, this.Foreground);
             drawingContext.DrawText(title, new Point(this.ActualWidth / 2 - title.Width / 2, this.topSpace / 2 - title.Height / 2));
             this.DrawAxis(drawingContext);
@@ -196,6 +200,8 @@ namespace LvWpfLib
                 }
             }
         }
+
+        #endregion
         public bool HasData()
         {
             foreach (var item in series)
@@ -207,17 +213,82 @@ namespace LvWpfLib
             }
             return false;
         }
+        
+        #region 交互操作
         /// <summary>
-        /// 更新数据
+        /// Zoom
         /// </summary>
-        public void RefreshData()
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="v"></param>
+        public void Zoom(double x,double y,int v)
         {
             CanvasWidth = this.ActualWidth - this.leftSpace - this.rightSpace;
             CanvasHeight = this.ActualHeight - this.topSpace - this.bottomSpace;
+            var factor = v > 0 ? 1.25 : 0.8;
+            this.scale *= factor;
+            var rx = x - leftSpace;
+            var ry = this.ActualHeight - bottomSpace - y;
+
+            var vy = minY + (ry / CanvasHeight) * (maxY - minY);
+            minY = vy - (vy - minY) * factor;
+            maxY = vy + (maxY - vy) * factor;
+
+            var vx =minTime.Ticks + (long)((rx / canvasWidth) * (maxTime.Ticks - minTime.Ticks));
+            minTime = new DateTime(Math.Max(0,vx - (long)((vx - minTime.Ticks) * factor)));
+            maxTime = new DateTime(Math.Max(0,vx + (long)((maxTime.Ticks - vx) * factor)));
+
+
+        }
+        /// <summary>
+        /// 移动图线
+        /// </summary>
+        /// <param name="sx"></param>
+        /// <param name="sy"></param>
+        /// <param name="ex"></param>
+        /// <param name="ey"></param>
+        public void Move(double sx,double sy,double ex,double ey)
+        {
+            CanvasWidth = this.ActualWidth - this.leftSpace - this.rightSpace;
+            CanvasHeight = this.ActualHeight - this.topSpace - this.bottomSpace;
+
+            var dy = (maxY - minY) * (ey - sy) / canvasHeight;
+            var dx = (long)((maxTime.Ticks - minTime.Ticks) * (ex - sx) / canvasWidth);
+            this.minY += dy;
+            this.maxY+=dy;
+            this.minTime = new DateTime(Math.Max(0,(minTime.Ticks - dx)));
+            this.maxTime = new DateTime(Math.Max(0, (maxTime.Ticks - dx)));
+        }
+
+        #endregion
+        #region 交互事件处理
+        Point interactionStartPoint;
+        Point interactionPoint;
+        InteractionState interactionState=InteractionState.Idle;
+        public enum InteractionState
+        {
+            Idle=0,
+            Operating=1,
+        }
+
+
+
+        #endregion
+
+        #region 更新相关
+
+        /// <summary>
+        /// 更改数据内容后调用此方法更新
+        /// </summary>
+        public void UpdateData()
+        {
+            this.scale = 1;
+            CanvasWidth = this.ActualWidth - this.leftSpace - this.rightSpace;
+            CanvasHeight = this.ActualHeight - this.topSpace - this.bottomSpace;
+
             //y轴自适应
             if (AutoFitY && this.Series.Count > 0 && this.HasData())
             {
-
                 foreach (var item in series)
                 {
                     if (item.HasDate())
@@ -239,42 +310,58 @@ namespace LvWpfLib
                 {
                     this.MaxY += 1;
                 }
+                this.defaultMaxY = maxY;
+                this.defaultMinY = minY;
             }
+
+
+
             //x轴自适应
-            //foreach (var item in series)
-            //{
-            //    if (item is TimePlotSeries)
-            //    {
-            //        var s = item as TimePlotSeries;
-            //        if (s.HasDate())
-            //        {
-            //            this.minTime = s.times[0];
-            //            this.maxTime = minTime;
-            //        }
-            //    }
-            //}
-            //foreach (var item in Series)
-            //{
-            //    if (item is TimePlotSeries && item.HasDate())
-            //    {
-            //        var series = (item as TimePlotSeries);
-            //        for (int i = 0; i < series.times.Length; i++)
-            //        {
+            foreach (var item in series)
+            {
+                if (item is TimePlotSeries)
+                {
+                    var s = item as TimePlotSeries;
+                    if (s.HasDate())
+                    {
+                        this.minTime = s.times[0];
+                        this.maxTime = minTime;
+                    }
+                }
+            }
+            foreach (var item in Series)
+            {
+                if (item is TimePlotSeries && item.HasDate())
+                {
+                    var series = (item as TimePlotSeries);
+                    for (int i = 0; i < series.times.Length; i++)
+                    {
+                        this.minTime = minTime < series.times[i] ? minTime : series.times[i];
+                        this.maxTime = maxTime > series.times[i] ? maxTime : series.times[i];
+                    }
 
-            //            this.minTime = minTime < series.times[i] ? minTime : series.times[i];
-            //            this.maxTime = maxTime > series.times[i] ? maxTime : series.times[i];
-            //        }
-
-            //    }
-            //}
+                }
+            }
             if (this.minTime == this.maxTime)
             {
                 maxTime = maxTime + TimeSpan.FromSeconds(1000);
             }
 
+            this.DefaultMinTime = MinTime;
+            this.DefaultMaxTime = MaxTime;
+
+            this.UpdateDisplay();
+        }
+        /// <summary>
+        /// 更新数据展现
+        /// </summary>
+        public void UpdateDisplay()
+        {
+            CanvasWidth = this.ActualWidth - this.leftSpace - this.rightSpace;
+            CanvasHeight = this.ActualHeight - this.topSpace - this.bottomSpace;
+
             foreach (var item in this.Series)
             {
-                //PointTransform(item);
                 item.PointTransform(this);
             }
             //计算刻度 数值
@@ -334,23 +421,63 @@ namespace LvWpfLib
             }
 
             this.graduateTime = graduateTimeX.ToArray();
-
-
-        }
-
-
-        /// <summary>
-        /// 更新数据和图形
-        /// </summary>
-        public void RefreshDataAndPlot()
-        {
-            this.RefreshData();
             this.InvalidateVisual();
         }
 
+        #endregion
+
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            this.RefreshDataAndPlot();
+            this.UpdateDisplay();
+        }
+
+        private void UserControl_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private void UserControl_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            var p = e.GetPosition(this);
+            switch (interactionState)
+            {
+                case InteractionState.Idle:
+                    break;
+                case InteractionState.Operating:
+                    this.Move(interactionPoint.X, interactionPoint.Y, p.X, p.Y);
+                    this.interactionPoint=p;
+                    this.UpdateDisplay();
+                    break;
+                default:
+                    break;
+            }
+            
+        }
+
+        private void UserControl_MouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+        {
+            this.interactionStartPoint = e.GetPosition(this);
+            this.Zoom(interactionStartPoint.X, interactionStartPoint.Y, e.Delta);
+            this.UpdateDisplay();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.UpdateDisplay();
+        }
+
+        private void timePlot_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            interactionStartPoint = e.GetPosition(this);
+            interactionPoint = interactionStartPoint;
+            interactionState = InteractionState.Operating;
+        }
+
+
+
+        private void timePlot_MouseUp(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            this.interactionState = InteractionState.Idle;
         }
     }
 }
