@@ -112,11 +112,5 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LvWpfLib\LvWpfLib.csproj">
-      <Project>{a2752311-95ac-4a32-8cec-f41eaa7cd27b}</Project>
-      <Name>LvWpfLib</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
