@@ -1,2 +1,5 @@
-
+/LvWpfDemo/bin/
+/LvWpfDemo/obj/
+/LvWpfLib/bin/
+/LvWpfLib/obj/
 *.cache
