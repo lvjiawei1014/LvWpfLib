@@ -200,7 +200,6 @@ namespace LvWpfLib.LvImageView
             return null;
         }
 
-
         public void DeleteDisplayItem(string name)
         {
             for (int i = 0; i < Items.Count; i++)

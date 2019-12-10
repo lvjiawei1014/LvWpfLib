@@ -1,22 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using MathNet.Numerics;
+using MathNet.Numerics.LinearAlgebra.Double;
+using Vector = MathNet.Numerics.LinearAlgebra.Double.Vector;
 
 namespace LvWpfLib
 {
     /// <summary>
     /// NcPlot.xaml 的交互逻辑
     /// </summary>
-    public partial class NcPlot : UserControl, INotifyPropertyChanged
+    public partial class NcPlot : UserControl
     {
-        public event PropertyChangedEventHandler PropertyChanged;
+        #region 布局与显示相关
         private string plotTitle = "Plot";
         private string axisNameY = "Axis Y";
         private string axisNameX = "Axis X";
+
         private double topSpace = 40;
         private double leftSpace = 40;
         private double bottomSpace = 40;
@@ -30,56 +35,31 @@ namespace LvWpfLib
         private double maxX = 1000;
         private double minX = 0;
 
-        private double AxisGraduateX = 60;
-
-        private DateTime maxTime;
-        private DateTime minTime;
-        private DateTime[] graduateTime;
-        private TimeSpan timeSpan;
-        private TimeSpanLevel timeSpanLevel;
-
         private double[] graduateX;
         private double[] graduateY;
 
         private bool autoFitX = true;
         private bool autoFitY = true;
 
+        StreamGeometry streamGeometry;
 
-        private PlotType plotType = PlotType.Plane;
+        #endregion
 
         double canvasWidth;
         double canvasHeight;
+        #region 数据与内容
 
-        private List<Series> series = new List<Series>();
+        private List<SamplePlotSeries> series = new List<SamplePlotSeries>();
         private List<PlotItem> items = new List<PlotItem>();
 
 
+        #endregion
+        #region 属性
         /// <summary>
         /// 图线显示模式
         /// </summary>
         private DisplayMode DisplayMode { get; set; } = DisplayMode.Normal;
-        /// <summary>
-        /// 图形标题
-        /// </summary>
-        public string PlotTitle
-        {
-            get => plotTitle; set
-            {
-                plotTitle = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("PlotTitle"));
-            }
-        }
-        /// <summary>
-        /// Y轴名称
-        /// </summary>
-        public string AxisNameY
-        {
-            get => axisNameY; set
-            {
-                axisNameY = value;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs("AxisNameY"));
-            }
-        }
+
         /// <summary>
         /// X轴名称
         /// </summary>
@@ -101,30 +81,22 @@ namespace LvWpfLib
         /// <summary>
         /// 图线系列
         /// </summary>
-        public List<Series> Series { get => series; set => series = value; }
+        public List<SamplePlotSeries> Series { get => series; set => series = value; }
         public double[] GraduateX { get => graduateX; set => graduateX = value; }
         public double[] GraduateY { get => graduateY; set => graduateY = value; }
         public double CanvasWidth { get => canvasWidth; set => canvasWidth = value; }
         public double CanvasHeight { get => canvasHeight; set => canvasHeight = value; }
-        /// <summary>
-        /// 图表类型
-        /// </summary>
-        public PlotType PlotType { get => plotType; set => plotType = value; }
-        /// <summary>
-        /// 时间范围最大值
-        /// </summary>
-        public DateTime MaxTime { get => maxTime; set => maxTime = value; }
-        /// <summary>
-        /// 时间范围最小值
-        /// </summary>
-        public DateTime MinTime { get => minTime; set => minTime = value; }
-        public DateTime[] GraduateTime { get => graduateTime; set => graduateTime = value; }
-        public TimeSpan TimeSpan { get => timeSpan; set => timeSpan = value; }
-        public TimeSpanLevel TimeSpanLevel { get => timeSpanLevel; set => timeSpanLevel = value; }
+
+
         /// <summary>
         /// 附加项目
         /// </summary>
         public List<PlotItem> Items { get => items; set => items = value; }
+        public string PlotTitle { get => plotTitle; set => plotTitle = value; }
+        public string AxisNameY { get => axisNameY; set => axisNameY = value; }
+
+
+        #endregion
 
         public NcPlot()
         {
@@ -135,13 +107,15 @@ namespace LvWpfLib
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
             base.OnRender(drawingContext);
             FormattedText title = new FormattedText(this.PlotTitle, CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("黑体"), this.FontSize + 4, this.Foreground);
             drawingContext.DrawText(title, new Point(this.ActualWidth / 2 - title.Width / 2, this.topSpace / 2 - title.Height / 2));
             this.DrawAxis(drawingContext);
             this.DrawSeries(drawingContext);
-
+            stopwatch.Stop();
+            System.Console.WriteLine("render time:" + stopwatch.Elapsed.TotalMilliseconds.ToString("0.000") + "ms");
         }
 
 
@@ -155,9 +129,7 @@ namespace LvWpfLib
             drawingContext.DrawLine(AxisPen, new Point(this.ActualWidth - this.rightSpace - 7, this.ActualHeight - this.bottomSpace - 4), new Point(this.ActualWidth - this.rightSpace, this.ActualHeight - this.bottomSpace));
             drawingContext.DrawLine(AxisPen, new Point(this.ActualWidth - this.rightSpace - 7, this.ActualHeight - this.bottomSpace + 4), new Point(this.ActualWidth - this.rightSpace, this.ActualHeight - this.bottomSpace));
             double x, y;
-            switch (this.PlotType)
-            {
-                case PlotType.Plane:
+
                     for (int i = 0; i < graduateX.Length; i++)
                     {
                         x = leftSpace + CanvasWidth * (graduateX[i] - minX) / (maxX - minX);
@@ -165,20 +137,7 @@ namespace LvWpfLib
                         FormattedText graduateText = new FormattedText(graduateX[i].ToString(), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("宋体"), this.FontSize, this.Foreground);
                         drawingContext.DrawText(graduateText, new Point(x - graduateText.Width / 2, topSpace + CanvasHeight + 10));
                     }
-                    break;
-                case PlotType.TimePlot:
-                    for (int i = 0; i < graduateTime.Length; i++)
-                    {
-                        x = leftSpace + CanvasWidth * ((double)(graduateTime[i].Ticks - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks));
-                        drawingContext.DrawLine(AxisPen, new Point(x, topSpace + CanvasHeight), new Point(x, topSpace + CanvasHeight - 4));
-                        FormattedText graduateText = new FormattedText(Utils.GetTimeLabel(graduateTime[i], this.timeSpanLevel), CultureInfo.CurrentCulture, FlowDirection.LeftToRight, new Typeface("宋体"), this.FontSize, this.Foreground);
-                        drawingContext.DrawText(graduateText, new Point(x - graduateText.Width / 2, topSpace + CanvasHeight + 10));
-                    }
 
-                    break;
-                default:
-                    break;
-            }
 
 
 
@@ -197,23 +156,46 @@ namespace LvWpfLib
         /// <param name="drawingContext"></param>
         private void DrawSeries(DrawingContext drawingContext)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             foreach (var item in this.Series)
             {
-                if (item.HasDate() && item.Enable)
+                if (item.HasData() && item.Enable &&item.Geometry!=null)
                 {
                     Pen seriesPen = new Pen(new SolidColorBrush(item.Color), item.Tickness);
-                    for (int i = 0; i < item.TransportedPoints.Length - 1; i++)
-                    {
-                        drawingContext.DrawLine(seriesPen, item.TransportedPoints[i], item.TransportedPoints[i + 1]);
-                    }
+                    //drawingContext.DrawGeometry(null, seriesPen, item.Geometry);
+                    //plotCanvas.
+                    //for (int i = 0; i < item.TransportedPoints.Length - 1; i++)
+                    //{
+                    //    drawingContext.DrawLine(seriesPen, item.TransportedPoints[i], item.TransportedPoints[i + 1]);
+                    //}
+
+
+                    //using (StreamGeometryContext ctx = streamGeometry.Open())
+                    //{
+                    //    ctx.BeginFigure(item.transportedPoints[0], false, false);
+                    //    for (int i = 1; i < item.transportedPoints.Length; i++)
+                    //    {
+                    //        ctx.LineTo(item.transportedPoints[i], false, false);
+                    //    }
+                    //}
+
                 }
             }
+
+
+            sw.Stop();
+            System.Console.WriteLine("draw time:" + sw.Elapsed.TotalMilliseconds.ToString("0.0000") + "ms");
+
         }
+
+
+        
         public bool HasData()
         {
             foreach (var item in series)
             {
-                if (item.HasDate())
+                if (item.HasData())
                 {
                     return true;
                 }
@@ -233,7 +215,7 @@ namespace LvWpfLib
 
                 foreach (var item in series)
                 {
-                    if (item.HasDate())
+                    if (item.HasData())
                     {
                         this.MinY = item.MinValue();
                         this.MaxY = this.MinY;
@@ -241,7 +223,7 @@ namespace LvWpfLib
                 }
                 foreach (var item in Series)
                 {
-                    if (item.HasDate())
+                    if (item.HasData())
                     {
                         this.MinY = Math.Min(MinY, item.MinValue());
                         this.MaxY = Math.Max(MaxY, item.MaxValue());
@@ -256,12 +238,10 @@ namespace LvWpfLib
             //x轴自适应
             if (AutoFitY && this.Series.Count > 0 && this.HasData())
             {
-                switch (this.PlotType)
-                {
-                    case PlotType.Plane:
+
                         foreach (var item in series)
                         {
-                            if (item.points != null && item.points.Length > 0 && item is PlotSeries)
+                            if (item.Points != null && item.Points.Count > 0 && item is PlotSeries)
                             {
                                 this.MinX = item.Points[0].X;
                                 this.MaxX = this.MinX;
@@ -269,13 +249,13 @@ namespace LvWpfLib
                         }
                         foreach (var item in Series)
                         {
-                            if (item.points != null && item is PlotSeries)
+                            if (item.Points != null && item is PlotSeries)
                             {
-                                for (int i = 0; i < item.Points.Length; i++)
+                                for (int i = 0; i < item.Points.Count; i++)
                                 {
 
-                                    this.minX = Math.Min(minX, item.points[i].X);
-                                    this.maxX = Math.Max(maxX, item.points[i].X);
+                                    this.minX = Math.Min(minX, item.Points[i].X);
+                                    this.maxX = Math.Max(maxX, item.Points[i].X);
                                 }
 
                             }
@@ -285,51 +265,16 @@ namespace LvWpfLib
                             this.maxX += 1;
                         }
 
-                        break;
-                    case PlotType.TimePlot:
-                        foreach (var item in series)
-                        {
-                            if (item is TimePlotSeries)
-                            {
-                                var s = item as TimePlotSeries;
-                                if (s.HasDate())
-                                {
-                                    this.minTime = s.times[0];
-                                    this.maxTime = minTime;
-                                }
-                            }
-                        }
-                        foreach (var item in Series)
-                        {
-                            if (item is TimePlotSeries && item.HasDate())
-                            {
-                                var series = (item as TimePlotSeries);
-                                for (int i = 0; i < series.times.Length; i++)
-                                {
 
-                                    this.minTime = minTime < series.times[i] ? minTime : series.times[i];
-                                    this.maxTime = maxTime > series.times[i] ? maxTime : series.times[i];
-                                }
-
-                            }
-                        }
-                        if (this.minTime == this.maxTime)
-                        {
-                            maxTime = maxTime + TimeSpan.FromSeconds(1000);
-                        }
-
-
-                        break;
-                    default:
-                        break;
-                }
+                
             }
 
             foreach (var item in this.Series)
             {
                 //PointTransform(item);
-                item.PointTransform(this);
+                item.RefreshCoordinate(this);
             }
+            //this.CreateGeomotry();
             //计算刻度 数值
             double tx = 50 * (maxX - minX) / CanvasWidth;
             double ty = 50 * (maxY - minY) / CanvasHeight;
@@ -349,90 +294,7 @@ namespace LvWpfLib
             {
                 graduateY[i - sy] = jgy * i;
             }
-            //时间刻度
-            long x = (this.maxTime - this.minTime).Ticks * (long)(this.AxisGraduateX) / (long)(this.canvasWidth);
-            long interval;
-            if (x > TimeSpan.FromDays(365).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Year;
-                int y = (int)Math.Log10(x / TimeSpan.FromDays(365).Ticks);
-                interval = (x / (TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y)))) * TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y));
-                interval = Math.Max(interval, TimeSpan.FromDays(365).Ticks);
-            }
-            else if (x > TimeSpan.FromDays(30).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Month;
-                interval = TimeSpan.FromDays(30).Ticks;
-            }
-            else if (x > TimeSpan.FromDays(1).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.day;
-                interval = TimeSpan.FromDays(1).Ticks;
-            }
-            else if (x > TimeSpan.FromHours(1).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Hour;
-                interval = TimeSpan.FromMinutes(60).Ticks;
-            }
-            else //if (x > TimeSpan.FromMinutes(1).Ticks)
-            {
-                this.timeSpanLevel = TimeSpanLevel.Minute;
-                interval = TimeSpan.FromMinutes(1).Ticks;
-            }
 
-            var start = Utils.DateTimeRound(minTime, this.timeSpanLevel).Ticks;
-            var lastPositionX = -this.AxisGraduateX;
-            List<DateTime> graduateTimeX = new List<DateTime>();
-            while (start < maxTime.Ticks)
-            {
-                var positionX = canvasWidth * (start - minTime.Ticks) / (maxTime.Ticks - minTime.Ticks);
-                if (start > minTime.Ticks && (positionX - lastPositionX) > this.AxisGraduateX)
-                {
-                    graduateTimeX.Add(new DateTime(start));
-                    lastPositionX = positionX;
-                }
-                start += interval;
-            }
-
-            this.graduateTime = graduateTimeX.ToArray();
-
-
-            //if (x < TimeSpan.FromMinutes(1).Ticks)
-            //{
-            //    this.timeSpanLevel = TimeSpanLevel.Minute;
-            //    interval = TimeSpan.FromMinutes(1).Ticks;
-
-            //}
-            //else if (x < TimeSpan.FromMinutes(60).Ticks)
-            //{
-            //    this.timeSpanLevel = TimeSpanLevel.Hour;
-            //    interval = TimeSpan.FromMinutes(60).Ticks;
-            //}
-            //else if (x < TimeSpan.FromHours(24).Ticks)
-            //{
-            //    this.timeSpanLevel = TimeSpanLevel.day;
-            //    interval = TimeSpan.FromDays(1).Ticks;
-            //}
-            //else if (x < TimeSpan.FromDays(30).Ticks)
-            //{
-            //    this.timeSpanLevel = TimeSpanLevel.Month;
-            //    interval = TimeSpan.FromDays(30).Ticks;
-            //}
-            //else 
-            //{
-            //    this.timeSpanLevel = TimeSpanLevel.Year;
-            //    int y = (int)Math.Log10(x / TimeSpan.FromDays(365).Ticks);
-            //    interval = (x / (TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y)))) * TimeSpan.FromDays(365).Ticks * ((long)Math.Pow(10, y));
-            //    interval = Math.Max(interval, TimeSpan.FromDays(365).Ticks);
-            //}
-
-            //var start = (minTime.Ticks / interval + 1)*interval;
-            //int count = (int)((maxTime.Ticks - start) / interval) + 1;
-            //graduateTime = new DateTime[count];
-            //for (int i = 0; i < count; i++)
-            //{
-            //    graduateTime[i] = new DateTime(start + interval * i);
-            //}
 
         }
 
@@ -446,27 +308,27 @@ namespace LvWpfLib
             this.InvalidateVisual();
         }
 
-        /// <summary>
-        /// 计算图形数据的实际坐标
-        /// 
-        /// </summary>
-        /// <param name="plotSeries"></param>
-        public void PointTransform(PlotSeries plotSeries)
-        {
-            if (plotSeries.points != null)
-            {
-                if (plotSeries.transportedPoints == null || plotSeries.transportedPoints.Length != plotSeries.points.Length)
-                {
-                    plotSeries.transportedPoints = new Point[plotSeries.points.Length];
-                }
-                for (int i = 0; i < plotSeries.points.Length; i++)
-                {
-                    var x = this.leftSpace + CanvasWidth * (plotSeries.points[i].X - minX) / (this.maxX - this.minX);
-                    var y = this.ActualHeight - bottomSpace - (CanvasHeight * (plotSeries.points[i].Y - minY) / (this.maxY - this.minY));
-                    plotSeries.transportedPoints[i] = new Point(x, y);
-                }
-            }
-        }
+        ///// <summary>
+        ///// 计算图形数据的实际坐标
+        ///// 
+        ///// </summary>
+        ///// <param name="plotSeries"></param>
+        //public void PointTransform(PlotSeries plotSeries)
+        //{
+        //    if (plotSeries.points != null)
+        //    {
+        //        if (plotSeries.transportedPoints == null || plotSeries.transportedPoints.Length != plotSeries.points.Length)
+        //        {
+        //            plotSeries.transportedPoints = new Point[plotSeries.points.Length];
+        //        }
+        //        for (int i = 0; i < plotSeries.points.Length; i++)
+        //        {
+        //            var x = this.leftSpace + CanvasWidth * (plotSeries.points[i].X - minX) / (this.maxX - this.minX);
+        //            var y = this.ActualHeight - bottomSpace - (CanvasHeight * (plotSeries.points[i].Y - minY) / (this.maxY - this.minY));
+        //            plotSeries.transportedPoints[i] = new Point(x, y);
+        //        }
+        //    }
+        //}
 
         private void UserControl_SizeChanged(object sender, SizeChangedEventArgs e)
         {
@@ -474,6 +336,138 @@ namespace LvWpfLib
         }
     }
 
+    public class SamplePlotSeries
+    {
+
+
+        private string name;
+        private Color color = Colors.Lime;
+        private bool enable = true;
+        private double tickness = 1;
+        private List<Point> points = new List<Point>();
+        private List<Point> coordinatePoints=null;
+
+        private StreamGeometry streamGeometry;
+        private NcPlot plot;
+
+        public StreamGeometry Geometry { get => streamGeometry; set => streamGeometry = value; }
+        public List<Point> Points { get => points; set => points = value; }
+        public NcPlot Plot { get => plot; set => plot = value; }
+        public string Name { get => name; set => name = value; }
+        public Color Color { get => color; set => color = value; }
+        public bool Enable { get => enable; set => enable = value; }
+        public double Tickness { get => tickness; set => tickness = value; }
+
+        public SamplePlotSeries(string name,Color lineColor,double tickness)
+        {
+            this.name = name;
+            this.color = color;
+            this.tickness = tickness;
+        }
+
+        #region data operate
+        public double MaxValue()
+        {
+            double max = this.points[0].Y;
+            for (int i = 0; i < this.points.Count; i++)
+            {
+                max = Math.Max(max, this.points[i].Y);
+            }
+            return max;
+        }
+
+        public double MinValue()
+        {
+            double min = this.points[0].Y;
+            for (int i = 0; i < this.points.Count; i++)
+            {
+                min = Math.Min(min, this.points[i].Y);
+            }
+            return min;
+        }
+
+
+        public bool ImportData(double[] xs,double[] ys)
+        {
+            if(xs==null || ys==null) { return false; }
+            if (xs.Length != ys.Length) { return false; }
+
+            return true;
+        }
+
+        public void ImportData(Point[] points)
+        {
+            this.Points.Clear();
+            this.Points.AddRange(points);
+        }
+
+        public void AppendData(Point[] points)
+        {
+            this.Points.AddRange(points);
+        }
+
+        public void Append(Point point)
+        {
+            this.Points.Add(point);
+        }
+
+        public bool HasData()
+        {
+            return Points.Count > 0;
+        }
+        #endregion
+
+        public void RefreshCoordinate(NcPlot plot)
+        {
+            if(!this.HasData()) {
+                this.streamGeometry = null;
+                return; }
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            this.coordinatePoints = new List<Point>();
+
+            for (int i = 0; i < this.points.Count; i++)
+            {
+                var x = plot.LeftSpace + plot.CanvasWidth * (this.points[i].X - plot.MinX) / (plot.MaxX - plot.MinX);
+                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.points[i].Y - plot.MinY) / (plot.MaxY - plot.MinY));
+                this.coordinatePoints.Add(new Point(x, y));
+            }
+            this.CreateGeomotry();
+            sw.Stop();
+            System.Console.WriteLine("RefreshCoordinate time:" + sw.Elapsed.TotalMilliseconds.ToString("0.0000") + "ms");
+
+
+        }
+
+        private void CreateGeomotry()
+        {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            streamGeometry = new StreamGeometry();
+            streamGeometry.FillRule = FillRule.EvenOdd;
+
+            using (StreamGeometryContext ctx = streamGeometry.Open())
+            {
+                ctx.BeginFigure(coordinatePoints[0], false, false);
+                for (int i = 1; i < coordinatePoints.Count; i++)
+                {
+                    ctx.LineTo(coordinatePoints[i], true, false);
+                }
+            }
+
+
+            streamGeometry.Freeze();
+
+            sw.Stop();
+            System.Console.WriteLine("CreateGeomotry time:" + sw.Elapsed.TotalMilliseconds.ToString("0.0000") + "ms");
+
+        }
+
+    }
+
+
+
+    #region old for time plot 
 
     public enum PlotType
     {
@@ -539,8 +533,8 @@ namespace LvWpfLib
 
     public class PlotSeries : Series
     {
-
-
+        private double[] x;
+        private double[] y;
 
         public PlotSeries(string name, Color color, double tickness)
         {
@@ -578,8 +572,11 @@ namespace LvWpfLib
             return min;
         }
 
+        
         public override void PointTransform(NcPlot plot)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             if (this.points != null)
             {
                 if (this.transportedPoints == null || this.transportedPoints.Length != this.points.Length)
@@ -597,8 +594,9 @@ namespace LvWpfLib
             {
                 this.transportedPoints = null;
             }
+            sw.Stop();
+            System.Console.WriteLine("trans time:" + sw.Elapsed.TotalMilliseconds.ToString("0.0000") + "ms");
         }
-
 
     }
 
@@ -660,29 +658,6 @@ namespace LvWpfLib
                 min = Math.Min(min, this.tmpValues[i]);
             }
             return min;
-        }
-
-        public override void PointTransform(NcPlot plot)
-        {
-
-            if (this.tmpValues == null || this.times == null || this.times.Length != this.tmpValues.Length || plot.PlotType != PlotType.TimePlot)
-            {
-                this.transportedPoints = null;
-                return;
-            }
-            if (this.transportedPoints == null || this.transportedPoints.Length != this.tmpValues.Length)
-            {
-                this.transportedPoints = new Point[this.tmpValues.Length];
-            }
-
-
-            for (int i = 0; i < this.tmpValues.Length; i++)
-            {
-                var x = plot.LeftSpace + plot.CanvasWidth * ((double)(this.times[i].Ticks - plot.MinTime.Ticks)) / (plot.MaxTime.Ticks - plot.MinTime.Ticks);
-                var y = plot.ActualHeight - plot.BottomSpace - (plot.CanvasHeight * (this.tmpValues[i] - plot.MinY) / (plot.MaxY - plot.MinY));
-                this.transportedPoints[i] = new Point(x, y);
-            }
-
         }
 
         public void PointTransform(NcTimePlot plot)
@@ -771,6 +746,11 @@ namespace LvWpfLib
             this.DisplayMode = displayMode;
             this.ProcessData();
         }
+
+        public override void PointTransform(NcPlot plot)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 
@@ -849,7 +829,7 @@ namespace LvWpfLib
         }
     }
 
-
+    #endregion
 
 
 

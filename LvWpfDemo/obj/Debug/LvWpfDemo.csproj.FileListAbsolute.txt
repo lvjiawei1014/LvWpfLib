@@ -81,3 +81,5 @@ E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.DirectXFiles.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.WPF.LightningChartUltimate.xml
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\Window1.g.cs
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\Window1.baml
+E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\MathNet.Numerics.dll
+E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\MathNet.Numerics.xml

@@ -214,7 +214,7 @@
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
                     <LvWpfLib:NcPlot x:Name="plot" Margin="10,10,10,75" PlotTitle="HHHHHHH"/>
-                    <Button x:Name="btnAddPoint" Content="加点" HorizontalAlignment="Left" Margin="10,298,0,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Click="BtnAddPoint_Click"/>
+                    <Button x:Name="btnAddPoint" Content="加点" HorizontalAlignment="Left" Margin="10,303,0,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Click="BtnAddPoint_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">

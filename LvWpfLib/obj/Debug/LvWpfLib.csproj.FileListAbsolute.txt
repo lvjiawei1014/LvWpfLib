@@ -100,3 +100,6 @@ E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.pdb
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\NcTimePlot.g.cs
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\NcTimePlot.baml
 E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.csprojAssemblyReference.cache
+E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\Debug\MathNet.Numerics.dll
+E:\Project\GitHub\LvWpfLib\LvWpfLib\bin\Debug\MathNet.Numerics.xml
+E:\Project\GitHub\LvWpfLib\LvWpfLib\obj\Debug\LvWpfLib.csproj.CopyComplete

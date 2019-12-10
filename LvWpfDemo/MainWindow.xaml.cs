@@ -62,29 +62,38 @@ namespace LvWpfDemo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var a = new TimePlotSeries("sd", Colors.Lime, 2);
-            var times = new DateTime[] {DateTime.Now,DateTime.Now+TimeSpan.FromMinutes(10), DateTime.Now + TimeSpan.FromMinutes(20),
-                DateTime.Now+TimeSpan.FromMinutes(30)};
-            var values = new double[] { 10, 5, 10, 20 };
+            //var a = new TimePlotSeries("sd", Colors.Lime, 2);
+            //var times = new DateTime[] {DateTime.Now,DateTime.Now+TimeSpan.FromMinutes(10), DateTime.Now + TimeSpan.FromMinutes(20),
+            //    DateTime.Now+TimeSpan.FromMinutes(30)};
+            //var values = new double[] { 10, 5, 10, 20 };
 
-            a.SetData(ref times, ref values,DisplayMode.Normal);
-            plot.PlotType = PlotType.TimePlot;
-            plot.Series.Add(a);
-            plot.RefreshDataAndPlot();
+            //a.SetData(times, values,DisplayMode.Normal);
+            //plot.Series.Add(a);
+            //plot.RefreshDataAndPlot();
 
-            var b = new TimePlotSeries("sd", Colors.Lime, 2);
-            var times1 = new DateTime[] {DateTime.Now,DateTime.Now+TimeSpan.FromMinutes(10), DateTime.Now + TimeSpan.FromMinutes(20),
-                DateTime.Now+TimeSpan.FromMinutes(30)};
-            var values2 = new double[] { 10, 5, 10, 20 };
-            b.SetData(ref times1,ref values2,DisplayMode.NormalizationAndLogarithm);
-            //b.SetDisplayMode(DisplayMode.NormalizationAndLogarithm);
+            //var b = new TimePlotSeries("sd", Colors.Lime, 2);
+            //var times1 = new DateTime[] {DateTime.Now,DateTime.Now+TimeSpan.FromMinutes(10), DateTime.Now + TimeSpan.FromMinutes(20),
+            //    DateTime.Now+TimeSpan.FromMinutes(30)};
+            //var values2 = new double[] { 10, 5, 10, 20 };
+            //b.SetData(times1,values2,DisplayMode.NormalizationAndLogarithm);
+            ////b.SetDisplayMode(DisplayMode.NormalizationAndLogarithm);
 
-            timePlot.Series.Add(b);
-            timePlot.UpdateData();
+            //timePlot.Series.Add(b);
+            //timePlot.UpdateData();
         }
 
         private void BtnAddPoint_Click(object sender, RoutedEventArgs e)
         {
+            Point[] ps = new Point[2000];
+            for (int i = 0; i < 2000; i++)
+            {
+                ps[i] = new Point(i, i);
+            }
+            SamplePlotSeries plotseries = new SamplePlotSeries("ssss", Colors.LightBlue, 2);
+            plotseries.ImportData(ps);
+            plot.Series.Add(plotseries);
+            plot.RefreshDataAndPlot();
+
 
         }
     }
