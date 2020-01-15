@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LvWpfDemo", "LvWpfDemo\LvWp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LvWpfLib", "LvWpfLib\LvWpfLib.csproj", "{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{9A495C10-7DE7-4E0B-9F22-009329EC8571}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,14 @@ Global
 		{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}.Release|x86.ActiveCfg = Release|x86
 		{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}.Release|x86.Build.0 = Release|x86
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Debug|x86.Build.0 = Debug|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Release|x86.ActiveCfg = Release|Any CPU
+		{9A495C10-7DE7-4E0B-9F22-009329EC8571}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

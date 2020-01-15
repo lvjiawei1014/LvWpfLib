@@ -6,9 +6,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using MathNet.Numerics;
-using MathNet.Numerics.LinearAlgebra.Double;
-using Vector = MathNet.Numerics.LinearAlgebra.Double.Vector;
+
 
 namespace LvWpfLib
 {

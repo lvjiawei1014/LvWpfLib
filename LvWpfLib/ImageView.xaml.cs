@@ -36,6 +36,7 @@ namespace LvWpfLib.LvImageView
         private bool continuousDraw = false;
         private System.Windows.Media.Color color=System.Windows.Media.Colors.Lime;
         private ImageViewState defaultState = ImageViewState.Normal;
+        private Visibility toolBoxVisibility = Visibility.Visible;
         #endregion
         #region 属性
         public ImageSource Image
@@ -72,6 +73,7 @@ namespace LvWpfLib.LvImageView
         public bool ContinuousDraw { get => continuousDraw; set => continuousDraw = value; }
         public System.Windows.Media.Color Color { get => color; set => color = value; }
         public ImageViewState DefaultState { get => defaultState; set => defaultState = value; }
+        public Visibility ToolBoxVisibility { get => toolBoxVisibility; set => toolBoxVisibility = value; }
 
         #endregion
         #region 事件
@@ -85,6 +87,7 @@ namespace LvWpfLib.LvImageView
         public ImageView()
         {
             InitializeComponent();
+            this.DataContext = this;
             this.ClipToBounds = true;
             curItem = new DisplayItem("default");
             //Items.Add(curItem);
@@ -468,7 +471,6 @@ namespace LvWpfLib.LvImageView
             System.Console.WriteLine(e.Delta + "  " + e.GetPosition(this));
             this.OnScale(e.GetPosition(this), this.imageElement.Scale * (e.Delta > 0 ? 0.8f : 1.25f));
         }
-
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {

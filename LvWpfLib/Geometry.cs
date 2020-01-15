@@ -35,7 +35,7 @@ namespace LvWpfLib.LvGeometry
             {
                 b2 = 1;
                 a2 = (point3.Y - point4.Y) / (point4.X - point3.X);
-                c2 = -(a2 * point3.X + point4.Y);
+                c2 = -(a2 * point4.X + point4.Y);
             }
             y = (a1 * c2 - a2 * c1) / (a2 * b1 - a1 * b2);
             //x = -(b2 * y + c2) / a2;

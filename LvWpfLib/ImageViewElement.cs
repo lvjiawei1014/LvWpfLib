@@ -591,6 +591,7 @@ namespace LvWpfLib.LvImageView
             this.Y = y;
             this.Width = w;
             this.Height = h;
+            this.OnElementChange(this);
         }
         public override bool AddKeyPoint(Point point)
         {
