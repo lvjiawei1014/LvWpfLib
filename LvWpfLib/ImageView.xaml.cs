@@ -469,7 +469,7 @@ namespace LvWpfLib.LvImageView
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             System.Console.WriteLine(e.Delta + "  " + e.GetPosition(this));
-            this.OnScale(e.GetPosition(this), this.imageElement.Scale * (e.Delta > 0 ? 0.8f : 1.25f));
+            this.OnScale(e.GetPosition(this), this.imageElement.Scale * (e.Delta < 0 ? 0.8f : 1.25f));
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
