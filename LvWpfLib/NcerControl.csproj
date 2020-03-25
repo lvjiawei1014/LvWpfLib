@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}</ProjectGuid>
     <OutputType>library</OutputType>
-    <RootNamespace>LvWpfLib</RootNamespace>
-    <AssemblyName>LvWpfLib</AssemblyName>
+    <RootNamespace>Ncer.UI</RootNamespace>
+    <AssemblyName>NcerControlLib</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -72,11 +72,12 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ImageView\PointElement.cs" />
     <Compile Include="NcTimePlot.xaml.cs">
       <DependentUpon>NcTimePlot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Utils.cs" />
-    <Page Include="ImageView.xaml">
+    <Page Include="ImageView\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -93,10 +94,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Geometry.cs" />
-    <Compile Include="ImageView.xaml.cs">
+    <Compile Include="ImageView\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ImageViewElement.cs" />
+    <Compile Include="ImageView\ImageViewElement.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NcPlot.xaml.cs">

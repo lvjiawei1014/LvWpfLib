@@ -7,9 +7,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Point = System.Windows.Point;
 using System.Globalization;
-using LvWpfLib.LvGeometry;
 
-namespace LvWpfLib.LvImageView
+namespace Ncer.UI
 {
     public abstract class ImageViewElement:IComparable<ImageViewElement>
     {
@@ -38,6 +37,7 @@ namespace LvWpfLib.LvImageView
         private bool selected = false;
         private bool isComplete = true;
         private bool showTag = true;
+        private bool editable = true;
 
         private Cursor elementCursor = Cursors.Arrow;
         private Color color = Colors.Lime;
@@ -68,6 +68,7 @@ namespace LvWpfLib.LvImageView
         public Color Color { get => color; set => color = value; }
         public bool ShowTag { get => showTag; set => showTag = value; }
         public object Item { get => item; set => item = value; }
+        public bool Editable { get => editable; set => editable = value; }
 
         #endregion
         public ImageViewElement()
@@ -112,13 +113,16 @@ namespace LvWpfLib.LvImageView
     public class ImageElement : ImageViewElement
     {
         private ImageSource image;
-
+        private double imageDisplayScale = 1.0;
         public ImageSource Image
         {
             get { return image; }
 
             set { this.image = value; this.Width = (Image == null) ? 0 : image.Width; this.Height = (Image == null) ? 0 : image.Height; }
         }
+
+        public double ImageDisplayScale { get => imageDisplayScale; set => imageDisplayScale = value; }
+
         public ImageElement() : base()
         {
 
@@ -143,8 +147,7 @@ namespace LvWpfLib.LvImageView
             //base.Drawing(drawingContext);
             if (this.image != null)
             {
-
-                drawingContext.DrawImage(this.image, new Rect(this.X, this.Y, image.Width * this.Scale, image.Height * this.Scale));
+                drawingContext.DrawImage(this.image, new Rect(this.X, this.Y, image.Width * this.Scale*ImageDisplayScale, image.Height * this.Scale* ImageDisplayScale));
             }
             
         }
@@ -165,6 +168,9 @@ namespace LvWpfLib.LvImageView
         }
     }
 
+    /// <summary>
+    /// 拖拽点对象
+    /// </summary>
     public class TractionPoint : ImageViewElement
     {
 
@@ -181,7 +187,7 @@ namespace LvWpfLib.LvImageView
         public TractionPoint(ImageViewElement parent)
         {
             this.Parent = parent;
-            this.Size = 6;
+            this.Size = 8;
         }
         /// <summary>
         /// 构造
@@ -191,7 +197,7 @@ namespace LvWpfLib.LvImageView
         /// <param name="parent"></param>
         public TractionPoint(double x, double y, ImageViewElement parent) : base()
         {
-            this.Size = 6;
+            this.Size = 8;
             this.X = x;
             this.Y = y;
             this.Parent = parent;
@@ -269,6 +275,9 @@ namespace LvWpfLib.LvImageView
         }
     }
 
+    /// <summary>
+    /// 关键点对象
+    /// </summary>
     public class KeyPoint
     {
 
@@ -334,6 +343,10 @@ namespace LvWpfLib.LvImageView
             : base()
         { }
     }
+
+    /// <summary>
+    /// 矩形元素
+    /// </summary>
     [Serializable()]
     public class RectElement : KeyPointElement
     {
@@ -1001,6 +1014,8 @@ namespace LvWpfLib.LvImageView
             return GeometryCal.PointInLine(x, y, this.GetPoints());
         }
     }
+
+    
 
 
 

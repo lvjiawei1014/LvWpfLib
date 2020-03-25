@@ -4,12 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LvWpfDemo"
-        xmlns:LvWpfLib="clr-namespace:LvWpfLib;assembly=LvWpfLib" x:Class="LvWpfDemo.Window1"
+        xmlns:LvWpfLib="clr-namespace:Ncer;assembly=LvWpfLib" x:Class="LvWpfDemo.Window1"
         mc:Ignorable="d"
         Title="Window1" Height="450" Width="800" Loaded="Window_Loaded">
     <Grid>
 
-        <LvWpfLib:NcTimePlot x:Name="plot" HorizontalAlignment="Left" Height="310" Margin="10,10,0,0" VerticalAlignment="Top" Width="536"/>
 
     </Grid>
 </Window>

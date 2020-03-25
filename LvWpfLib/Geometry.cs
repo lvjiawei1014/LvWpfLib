@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 
-namespace LvWpfLib.LvGeometry
+namespace Ncer.UI
 {
     public class GeometryCal
     {

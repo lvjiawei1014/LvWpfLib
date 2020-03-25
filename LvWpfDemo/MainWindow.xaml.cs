@@ -11,8 +11,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using LvWpfLib;
-using LvWpfLib.LvImageView;
+using Ncer;
+using Ncer.UI;
 
 
 namespace LvWpfDemo
@@ -62,6 +62,12 @@ namespace LvWpfDemo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            var point = new PointElement(100, 100, imageView.imageElement) { Tag = "point" };
+            point.OnElementChangeDoneEvent += Point_OnElementChangeDoneEvent;
+            imageView.AddPoint(point);
+            imageView.AddRectangle(new RectElement(100, 100, 100, 100));
+            
+
             //var a = new TimePlotSeries("sd", Colors.Lime, 2);
             //var times = new DateTime[] {DateTime.Now,DateTime.Now+TimeSpan.FromMinutes(10), DateTime.Now + TimeSpan.FromMinutes(20),
             //    DateTime.Now+TimeSpan.FromMinutes(30)};
@@ -82,19 +88,10 @@ namespace LvWpfDemo
             //timePlot.UpdateData();
         }
 
-        private void BtnAddPoint_Click(object sender, RoutedEventArgs e)
+        private void Point_OnElementChangeDoneEvent(object sender)
         {
-            Point[] ps = new Point[2000];
-            for (int i = 0; i < 2000; i++)
-            {
-                ps[i] = new Point(i, i);
-            }
-            SamplePlotSeries plotseries = new SamplePlotSeries("ssss", Colors.LightBlue, 2);
-            plotseries.ImportData(ps);
-            plot.Series.Add(plotseries);
-            plot.RefreshDataAndPlot();
-
-
+            var point = sender as PointElement;
+            System.Console.WriteLine("X:" + point.X + "\tY:" + point.Y);
         }
     }
 }

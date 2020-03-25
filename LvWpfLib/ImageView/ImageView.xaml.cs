@@ -14,7 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Point = System.Windows.Point;
 
-namespace LvWpfLib.LvImageView
+namespace Ncer.UI
 {
     /// <summary>
     /// ImageView.xaml 的交互逻辑
@@ -284,25 +284,37 @@ namespace LvWpfLib.LvImageView
         }
         public void AddElement(ImageViewElement element)
         {
-            if (element is RectElement)
+            switch (element)
             {
-                AddRectangle(element as RectElement);
-                return;
+                case PointElement point when element is PointElement:
+                    AddPoint(point);
+                    break;
+                case RectElement rect when element is RectElement:
+                    AddRectangle(rect);
+                    break;
+                case LineElement line when element is LineElement:
+                    AddLine(line);
+                    break;
+                case PolygonElement polygon when element is PolygonElement:
+                    AddPolygon(polygon);
+                    break;
+                default:
+                    break;
             }
-            if (element is LineElement)
-            {
-                AddLine(element as LineElement);
-                return;
+        }
 
-            }
-            if (element is PolygonElement)
+        public void AddPoint(PointElement point)
+        {
+            //point.GlobalCoordinate = imageElement.Coordinate;
+            //point.Parent = imageElement;
+            elements.Add(point);
+            baseElements.Add(point);
+            for (int i = 0; i < point.keyPointList.Count; i++)
             {
-                AddPolypon(element as PolygonElement);
+                baseElements.Add(point.keyPointList[i].TractionPoint);
             }
-            //if (element is EllipseElement)
-            //{
-            //    AddEllipse(element as EllipseElement);
-            //}
+            baseElements.Sort();
+            this.InvalidateVisual();
         }
         public void AddLine(LineElement line)
         {
@@ -317,7 +329,7 @@ namespace LvWpfLib.LvImageView
             baseElements.Sort();
             this.InvalidateVisual();
         }
-        public void AddPolypon(PolygonElement polygon)
+        public void AddPolygon(PolygonElement polygon)
         {
             polygon.GlobalCoordinate = imageElement.Coordinate;
             polygon.Parent = imageElement;
@@ -401,22 +413,20 @@ namespace LvWpfLib.LvImageView
         #endregion
 
         #region 创建图形元素
-        public void CreateElement(ElementType type)
-        {
-            CreateElement(type, "");
-        }
+
         /// <summary>
         /// 在绘制前先创建好对象
         /// </summary>
         /// <param name="type"></param>
         /// <param name="name"></param>
-        public void CreateElement(ElementType type, string name)
+        public void CreateElement(ElementType type, string name="")
         {
             switch (type)
             {
                 case ElementType.Image:
                     break;
                 case ElementType.Point:
+                    this.drawingElement = new PointElement();
                     break;
                 case ElementType.Line:
                     this.drawingElement = new LineElement();
@@ -466,6 +476,8 @@ namespace LvWpfLib.LvImageView
             
         }
 
+
+        #region ui 交互事件
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             System.Console.WriteLine(e.Delta + "  " + e.GetPosition(this));
@@ -478,6 +490,7 @@ namespace LvWpfLib.LvImageView
             this.ImageMouseMove?.Invoke(this, new ImageMouseMoveEventArgs() { Location = p });
             ImageViewElement targetElement = this.GetTargetElement(p.X, p.Y);
             pointedElement = targetElement;
+
             if (ImageViewState == ImageViewState.Normal)
             {
                 if (MouseState == MouseState.Operating)
@@ -655,6 +668,10 @@ namespace LvWpfLib.LvImageView
         {
             switch (((MenuItem)sender).Name)
             {
+                case "DrawPoint":
+                    this.CreateElement(ElementType.Point);
+                    break;
+
                 case "DrawRect":
                     this.CreateElement(ElementType.Rectangle);
                     break;
@@ -766,6 +783,8 @@ namespace LvWpfLib.LvImageView
         {
 
         }
+
+        #endregion
     }
 
 

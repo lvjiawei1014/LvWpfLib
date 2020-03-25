@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:LvWpfDemo"
-        xmlns:lv="clr-namespace:LvWpfLib"
-        xmlns:LvWpfLib="clr-namespace:LvWpfLib;assembly=LvWpfLib" xmlns:LvImageView="clr-namespace:LvWpfLib.LvImageView;assembly=LvWpfLib" xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" x:Class="LvWpfDemo.MainWindow"
+        xmlns:lv="clr-namespace:Ncer"
+        xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2" xmlns:UI="clr-namespace:Ncer.UI;assembly=NcerControlLib" x:Class="LvWpfDemo.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" Loaded="Window_Loaded">
     <Window.Resources>
@@ -213,22 +213,14 @@
         <TabControl Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
-                    <LvWpfLib:NcPlot x:Name="plot" Margin="10,10,10,75" PlotTitle="HHHHHHH"/>
-                    <Button x:Name="btnAddPoint" Content="加点" HorizontalAlignment="Left" Margin="10,303,0,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Click="BtnAddPoint_Click"/>
+                    <UI:ImageView x:Name="imageView" HorizontalAlignment="Left" Height="353" Margin="10,10,0,0" VerticalAlignment="Top" Width="487" Image="1.jpg" AutoFit="True"/>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
-                    <LvImageView:ImageView x:Name="imageView" Margin="10,10,285,108"/>
-                    <Button Content="图片1" HorizontalAlignment="Left" Margin="-39,171,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="19" Style="{DynamicResource ButtonStyle1}"/>
-                    <Button Content="图片2" HorizontalAlignment="Left" Margin="41,171,0,0" VerticalAlignment="Top" Width="75" Click="btnImage2_Click" Height="19" Style="{DynamicResource ButtonStyle1}"/>
-                    <Button Content="矩形" HorizontalAlignment="Left" Margin="121,171,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click" Height="19" Style="{DynamicResource ButtonStyle1}"/>
-                </Grid>
+                <Grid Background="#FFE5E5E5"/>
             </TabItem>
             <TabItem Header="TabItem" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="59" Margin="-3,0,0,0">
-                <Grid Background="#FFE5E5E5">
-                    <LvWpfLib:NcTimePlot x:Name="timePlot" Margin="10,10,10,115"/>
-                </Grid>
+                <Grid Background="#FFE5E5E5"/>
             </TabItem>
         </TabControl>
 

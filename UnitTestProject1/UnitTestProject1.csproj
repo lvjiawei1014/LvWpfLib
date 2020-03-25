@@ -57,9 +57,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LvWpfLib\LvWpfLib.csproj">
+    <ProjectReference Include="..\LvWpfLib\NcerControl.csproj">
       <Project>{a2752311-95ac-4a32-8cec-f41eaa7cd27b}</Project>
-      <Name>LvWpfLib</Name>
+      <Name>NcerControl</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

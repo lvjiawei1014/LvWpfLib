@@ -8,7 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 
 
-namespace LvWpfLib
+namespace Ncer.UI
 {
     /// <summary>
     /// NcPlot.xaml 的交互逻辑

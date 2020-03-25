@@ -1,4 +1,4 @@
-﻿using LvWpfLib;
+﻿using Ncer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,11 +27,7 @@ namespace LvWpfDemo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var a = new TimePlotSeries("sd", Colors.Lime, 2);
-            a.times = new DateTime[] {DateTime.Now,DateTime.Now+TimeSpan.FromMinutes(10), DateTime.Now + TimeSpan.FromMinutes(20),
-                DateTime.Now+TimeSpan.FromMinutes(30)};
-            a.rawValues = new double[] { 10, 5, 10, 20 };
-            plot.Series.Add(a);
+
         }
     }
 }

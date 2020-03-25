@@ -1,8 +1,8 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using LvWpfLib;
-using LvWpfLib.LvImageView;
-using LvWpfLib.LvGeometry;
+using Ncer;
+using Ncer.LvImageView;
+using Ncer.LvGeometry;
 
 namespace UnitTestProject1
 {

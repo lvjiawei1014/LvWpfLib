@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.28922.388
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LvWpfDemo", "LvWpfDemo\LvWpfDemo.csproj", "{54457EFA-1A83-4D8D-B4F8-00A2789A9038}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LvWpfLib", "LvWpfLib\LvWpfLib.csproj", "{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NcerControl", "LvWpfLib\NcerControl.csproj", "{A2752311-95AC-4A32-8CEC-F41EAA7CD27B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{9A495C10-7DE7-4E0B-9F22-009329EC8571}"
 EndProject

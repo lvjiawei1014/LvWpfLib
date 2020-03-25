@@ -62,12 +62,10 @@ E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\LvWpfDemo.exe
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\LvWpfDemo.pdb
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.DirectX.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.WPF.LightningChartUltimate.dll
-E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\LvWpfLib.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.Direct3D9.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.Licensing.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.DirectXInit.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.DirectXFiles.dll
-E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\LvWpfLib.pdb
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\Arction.WPF.LightningChartUltimate.xml
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\MainWindow.g.cs
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\Window1.g.cs
@@ -81,3 +79,5 @@ E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\LvWpfDemo.csproj.GenerateResource
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\LvWpfDemo.csproj.CopyComplete
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\LvWpfDemo.exe
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\LvWpfDemo.pdb
+E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\NcerControlLib.dll
+E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\NcerControlLib.pdb
