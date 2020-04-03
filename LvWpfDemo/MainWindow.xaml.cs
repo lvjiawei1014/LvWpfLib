@@ -62,7 +62,7 @@ namespace LvWpfDemo
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            var point = new PointElement(100, 100, imageView.imageElement) { Tag = "point" };
+            var point = new PointElement(100, 100, imageView.ImageElement) { Tag = "point" };
             point.OnElementChangeDoneEvent += Point_OnElementChangeDoneEvent;
             imageView.AddPoint(point);
             imageView.AddRectangle(new RectElement(100, 100, 100, 100));
