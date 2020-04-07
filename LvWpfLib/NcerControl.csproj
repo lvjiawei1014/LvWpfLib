@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageView\ImageElement.cs" />
+    <Compile Include="ImageView\InteractionImageElement.cs" />
     <Compile Include="ImageView\PointElement.cs" />
     <Compile Include="ImageView\KeyPoint.cs" />
     <Compile Include="ImageView\KeyPointElement.cs" />
