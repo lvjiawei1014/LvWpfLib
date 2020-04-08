@@ -93,5 +93,16 @@ namespace LvWpfDemo
             var point = sender as PointElement;
             System.Console.WriteLine("X:" + point.X + "\tY:" + point.Y);
         }
+
+        private void btnJet_Click(object sender, RoutedEventArgs e)
+        {
+            colorBar.ColormapType = ColormapType.Jet;
+        }
+
+        private void btnGray_Click(object sender, RoutedEventArgs e)
+        {
+            colorBar.ColormapType = ColormapType.Gray;
+
+        }
     }
 }

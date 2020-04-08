@@ -23,6 +23,8 @@ namespace Ncer.UI
     {
         #region 事件
 
+        //public delegate void ImageCli
+
         public delegate void ElementCreateEvent(ImageViewElement element);
         public event ElementCreateEvent ElementCreateEventHandler;
 

@@ -72,6 +72,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ColormapBar\ColormapBar.xaml.cs">
+      <DependentUpon>ColormapBar.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ImageView\ImageElement.cs" />
     <Compile Include="ImageView\InteractionImageElement.cs" />
     <Compile Include="ImageView\PointElement.cs" />
@@ -85,6 +88,10 @@
     <Compile Include="ImageView\PolygonElement.cs" />
     <Compile Include="ImageView\RectElement.cs" />
     <Compile Include="ImageView\TractionPoint.cs" />
+    <Page Include="ColormapBar\ColormapBar.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="ImageView\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
