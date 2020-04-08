@@ -23,7 +23,9 @@ namespace Ncer.UI
     {
         #region 事件
         public delegate void ImageMouseMoveHandler(object sender, ImageMouseMoveEventArgs imageMouseMoveEventArgs);
+        public delegate void ImageClickedHanlder(object sender, Point point);
         public event ImageMouseMoveHandler ImageMouseMove;
+        public event ImageClickedHanlder ImageClicked;
         #endregion
 
         #region 静态成员
@@ -568,6 +570,7 @@ namespace Ncer.UI
                 this.MouseState = MouseState.Operating;
                 this.operationStartControlPoint = e.GetPosition(this);
                 this.operationStartImagePoint = p;
+                this.ImageClicked?.Invoke(this, p);
             }
             if (ImageViewState == ImageViewState.Draw)
             {
