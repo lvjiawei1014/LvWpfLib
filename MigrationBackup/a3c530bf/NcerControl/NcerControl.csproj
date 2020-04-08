@@ -72,35 +72,20 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ColormapBar\ColormapBar.xaml.cs">
-      <DependentUpon>ColormapBar.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="ImageView\ImageElement.cs" />
-    <Compile Include="ImageView\InteractionImageElement.cs" />
     <Compile Include="ImageView\PointElement.cs" />
-    <Compile Include="ImageView\KeyPoint.cs" />
-    <Compile Include="ImageView\KeyPointElement.cs" />
-    <Compile Include="ImageView\LineElement.cs" />
-    <Compile Include="Plot\NcTimePlot.xaml.cs">
+    <Compile Include="NcTimePlot.xaml.cs">
       <DependentUpon>NcTimePlot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Core\Utils.cs" />
-    <Compile Include="ImageView\PolygonElement.cs" />
-    <Compile Include="ImageView\RectElement.cs" />
-    <Compile Include="ImageView\TractionPoint.cs" />
-    <Page Include="ColormapBar\ColormapBar.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
+    <Compile Include="Utils.cs" />
     <Page Include="ImageView\ImageView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Plot\NcPlot.xaml">
+    <Page Include="NcPlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Plot\NcTimePlot.xaml">
+    <Page Include="NcTimePlot.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -108,14 +93,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="Core\Geometry.cs" />
+    <Compile Include="Geometry.cs" />
     <Compile Include="ImageView\ImageView.xaml.cs">
       <DependentUpon>ImageView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ImageView\ImageViewElement.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Plot\NcPlot.xaml.cs">
+    <Compile Include="NcPlot.xaml.cs">
       <DependentUpon>NcPlot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -135,7 +120,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -143,11 +128,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\play.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="MathNet.Numerics">
-      <Version>4.9.0</Version>
-    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

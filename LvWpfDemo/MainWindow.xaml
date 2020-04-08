@@ -217,7 +217,11 @@
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5">
+                    <UI:ColormapBar x:Name="colorBar" HorizontalAlignment="Left" Height="237" Margin="76,43,0,0" VerticalAlignment="Top" Width="50"/>
+                    <Button x:Name="btnJet" Content="Jet" HorizontalAlignment="Left" Margin="275,65,0,0" VerticalAlignment="Top" Width="75" Click="btnJet_Click"/>
+                    <Button x:Name="btnGray" Content="Gray" HorizontalAlignment="Left" Margin="275,118,0,0" VerticalAlignment="Top" Width="75" Click="btnGray_Click"/>
+                </Grid>
             </TabItem>
             <TabItem Header="TabItem" HorizontalAlignment="Left" Height="19" VerticalAlignment="Top" Width="59" Margin="-3,0,0,0">
                 <Grid Background="#FFE5E5E5"/>

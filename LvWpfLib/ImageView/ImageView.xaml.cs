@@ -22,12 +22,20 @@ namespace Ncer.UI
     public partial class ImageView : UserControl
     {
         #region 事件
+
+        //public delegate void ImageCli
+
+        public delegate void ElementCreateEvent(ImageViewElement element);
+        public event ElementCreateEvent ElementCreateEventHandler;
+
+        public delegate void ElementDeleteEvent(ImageViewElement element);
+        public event ElementDeleteEvent ElementDeleteEventHandler;
+
         public delegate void ImageMouseMoveHandler(object sender, ImageMouseMoveEventArgs imageMouseMoveEventArgs);
         public delegate void ImageClickedHanlder(object sender, Point point);
         public event ImageMouseMoveHandler ImageMouseMove;
         public event ImageClickedHanlder ImageClicked;
         #endregion
-
         #region 静态成员
         private static float MaxScale = 10f;
         private static float MinScale = 0.1f;
@@ -36,11 +44,14 @@ namespace Ncer.UI
         public List<DisplayItem> Items = new List<DisplayItem>();
         private DisplayItem curItem;
         private bool continuousDraw = false;
-        private System.Windows.Media.Color color=System.Windows.Media.Colors.Lime;
+        private System.Windows.Media.Color color = System.Windows.Media.Colors.Lime;
         private ImageViewState defaultState = ImageViewState.Normal;
         private Visibility toolBoxVisibility = Visibility.Visible;
         #endregion
         #region 属性
+        /// <summary>
+        /// 图像
+        /// </summary>
         public ImageSource Image
         {
             get { return curItem.Image; }
@@ -52,24 +63,26 @@ namespace Ncer.UI
         public double ImageScale { get { return curItem.imageElement.Scale; } set { this.curItem.imageElement.Scale = value; } }
         public bool AutoFit { get; set; }
 
-        public ImageElement imageElement { get { return curItem.imageElement; } set { curItem.imageElement = value; } }
-        public ImageViewElement operatedElement { get { return curItem.operatedElement; } set { curItem.operatedElement = value; } }
+        public bool FixImage { get; set; } = false;
+
+        public ImageElement ImageElement { get { return curItem.imageElement; } set { curItem.imageElement = value; } }
+        public ImageViewElement OperatedElement { get { return curItem.operatedElement; } set { curItem.operatedElement = value; } }
         /// <summary>
         /// 图形绘制缓存对象 
         /// </summary>
-        public KeyPointElement drawingElement { get { return curItem.drawingElement; } set { curItem.drawingElement = value; } }
-        public ImageViewElement selectedElement { get { return curItem.selectedElement; } set { curItem.selectedElement = value; } }
+        public KeyPointElement DrawingElement { get { return curItem.drawingElement; } set { curItem.drawingElement = value; } }
+        public ImageViewElement SelectedElement { get { return curItem.selectedElement; } set { curItem.selectedElement = value; } }
 
-        public ImageViewElement pointedElement { get { return curItem.pointedElement; } set { curItem.pointedElement = value; } }
+        public ImageViewElement PointedElement { get { return curItem.pointedElement; } set { curItem.pointedElement = value; } }
         public Point operationStartControlPoint { get { return curItem.operationStartControlPoint; } set { curItem.operationStartControlPoint = value; } }
         /// <summary>
         /// 鼠标操作起始点在图像坐标系的坐标
         /// </summary>
-        public Point operationStartImagePoint { get { return curItem.operationStartImagePoint; } set { curItem.operationStartImagePoint = value; } }
-        public Point operatedElementStartPoint { get { return curItem.operatedElementStartPoint; } set { curItem.operatedElementStartPoint = value; } }//被操作的element的初始位置
+        public Point OperationStartImagePoint { get { return curItem.operationStartImagePoint; } set { curItem.operationStartImagePoint = value; } }
+        public Point OperatedElementStartPoint { get { return curItem.operatedElementStartPoint; } set { curItem.operatedElementStartPoint = value; } }//被操作的element的初始位置
 
-        public List<ImageViewElement> elements { get { return curItem.elements; } set { curItem.elements = value; } }
-        public List<ImageViewElement> baseElements { get { return curItem.baseElements; } set { curItem.baseElements = value; } }
+        public List<ImageViewElement> Elements { get { return curItem.elements; } set { curItem.elements = value; } }
+        public List<ImageViewElement> BaseElements { get { return curItem.baseElements; } set { curItem.baseElements = value; } }
 
         public DisplayItem CurItem { get => curItem; set => curItem = value; }
         public bool ContinuousDraw { get => continuousDraw; set => continuousDraw = value; }
@@ -77,13 +90,6 @@ namespace Ncer.UI
         public ImageViewState DefaultState { get => defaultState; set => defaultState = value; }
         public Visibility ToolBoxVisibility { get => toolBoxVisibility; set => toolBoxVisibility = value; }
 
-        #endregion
-        #region 事件
-        public delegate void ElementCreateEvent(ImageViewElement element);
-        public event ElementCreateEvent ElementCreateEventHandler;
-
-        public delegate void ElementDeleteEvent(ImageViewElement element);
-        public event ElementDeleteEvent ElementDeleteEventHandler;
         #endregion
         #region 初始化
         public ImageView()
@@ -96,48 +102,109 @@ namespace Ncer.UI
             this.AddDisplayItem(curItem);
         }
         #endregion
-
-        protected override void OnRender(DrawingContext drawingContext)  
+        #region 核心逻辑
+        protected override void OnRender(DrawingContext drawingContext)
         {
-            
+
             base.OnRender(drawingContext);
-            
+
             DrawingBrush tileBack = (DrawingBrush)this.Resources["TileBack"];
             drawingContext.DrawRectangle(tileBack, null, new Rect(0, 0, this.ActualWidth, this.ActualHeight));
 
-            if (this.imageElement != null)
+            if (this.ImageElement != null)
             {
-                imageElement.Drawing(drawingContext);
+                ImageElement.Drawing(drawingContext);
 
-                foreach (ImageViewElement element in elements)
+                foreach (ImageViewElement element in Elements)
                 {
                     if (element.Visible)
                     {
                         element.Drawing(drawingContext);
                     }
                 }
-                if (drawingElement != null && drawingElement.Visible && this.ImageViewState == ImageViewState.Draw)
+                if (DrawingElement != null && DrawingElement.Visible && this.ImageViewState == ImageViewState.Draw)
                 {
-                    drawingElement.Drawing(drawingContext);
+                    DrawingElement.Drawing(drawingContext);
                 }
             }
-        }
-        #region 核心逻辑
-        //public void AddDisplayItem(string name)
-        //{
-        //    this.Items.Add(new DisplayItem(name));
-        //}
-        public void AddDisplayItem(DisplayItem item)
-        {
-            item.ElementDeleteEventHandler += Item_ElementDeleteEventHandler;
-            this.Items.Add(item);
         }
 
         private void Item_ElementDeleteEventHandler(ImageViewElement element)
         {
             this.ElementDeleteEventHandler?.Invoke(element);
         }
+        private void OnImageSet(ImageSource image)
+        {
 
+                if (image != null)
+                {
+                    if (AutoFit)
+                    {
+                        ImageElement.FitToWindow(this.ActualWidth, this.ActualHeight);
+                    }
+                    else
+                    {
+                        this.ImageElement.Scale = Math.Min(ImageElement.Scale * ImageElement.Height / image.Height, ImageElement.Scale * ImageElement.Width / image.Width);
+                    }
+
+                    this.InvalidateVisual();
+                }
+            
+            
+        }
+        public void ChangeMode(ImageViewState mode)
+        {
+            if (mode != this.ImageViewState)
+            {
+                this.MouseState = MouseState.Idle;
+            }
+            this.ImageViewState = mode;
+            switch (mode)
+            {
+                case ImageViewState.Normal:
+                    this.Cursor = Cursors.Hand;
+                    break;
+                case ImageViewState.Edit:
+                    break;
+                case ImageViewState.Draw:
+                    break;
+                default:
+                    break;
+            }
+
+
+        }
+
+        private void OnScale(Point mouseLocation, double scale)
+        {
+            if (scale > MaxScale || scale < MinScale)
+            {
+                return;
+            }
+            if (ImageElement != null)
+            {
+                ImageElement.ScaleImage(mouseLocation, scale);
+            }
+
+            this.InvalidateVisual();
+        }
+        
+        public void Zoom(float relative)
+        {
+            this.OnScale(new Point(this.Width / 2, this.Height / 2), this.ImageScale * relative);
+        }
+        public void AbsoluteMove(double x,double y)
+        {
+            this.ImageElement.X = x ;
+            this.ImageElement.Y = y;
+        }
+        #endregion
+        #region display item
+        public void AddDisplayItem(DisplayItem item)
+        {
+            item.ElementDeleteEventHandler += Item_ElementDeleteEventHandler;
+            this.Items.Add(item);
+        }
         public DisplayItem GetDisplayItem(string name)
         {
             for (int i = 0; i < Items.Count; i++)
@@ -149,6 +216,7 @@ namespace Ncer.UI
             }
             return null;
         }
+
         public void SwitchDisplayItem(string name)
         {
             for (int i = 0; i < Items.Count; i++)
@@ -161,7 +229,7 @@ namespace Ncer.UI
             }
             this.MouseState = MouseState.Idle;
             this.ImageViewState = ImageViewState.Normal;
-            this.imageElement.FitToWindow(this.ActualWidth, this.ActualHeight);
+            this.ImageElement.FitToWindow(this.ActualWidth, this.ActualHeight);
             this.InvalidateVisual();
         }
         public void SwitchDisplayItem(int index)
@@ -224,66 +292,49 @@ namespace Ncer.UI
                 Items.RemoveAt(1);
             }
         }
-        private void OnImageSet(ImageSource image)
-        {
 
-                if (image != null)
-                {
-                    if (AutoFit)
-                    {
-                        imageElement.FitToWindow(this.ActualWidth, this.ActualHeight);
-                    }
-                    else
-                    {
-                        this.imageElement.Scale = Math.Min(imageElement.Scale * imageElement.Height / image.Height, imageElement.Scale * imageElement.Width / image.Width);
-                    }
-
-                    this.InvalidateVisual();
-                }
-            
-            
-        }
-        public void ChangeMode(ImageViewState mode)
+        #endregion
+        #region Elements
+        /// <summary>
+        /// 在绘制前先创建好对象
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="name"></param>
+        public void CreateElement(ElementType type, string name = "")
         {
-            if (mode != this.ImageViewState)
+            switch (type)
             {
-                this.MouseState = MouseState.Idle;
-            }
-            this.ImageViewState = mode;
-            switch (mode)
-            {
-                case ImageViewState.Normal:
-                    this.Cursor = Cursors.Hand;
+                case ElementType.Image:
                     break;
-                case ImageViewState.Edit:
+                case ElementType.Point:
+                    this.DrawingElement = new PointElement();
                     break;
-                case ImageViewState.Draw:
+                case ElementType.Line:
+                    this.DrawingElement = new LineElement();
                     break;
+                case ElementType.Rectangle:
+                    this.DrawingElement = new RectElement();
+                    break;
+                case ElementType.Polygon:
+                    this.DrawingElement = new PolygonElement();
+                    break;
+                //case ElementType.Ellipse:
+                //    this.drawingElement = new EllipseElement();
+                //    break;
                 default:
                     break;
             }
-
-
+            this.DrawingElement.Name = name;
+            this.DrawingElement.Parent = this.ImageElement;
+            this.DrawingElement.GlobalCoordinate = this.ImageElement.Coordinate;
+            this.MouseState = MouseState.Idle;
+            this.ImageViewState = ImageViewState.Draw;
+            this.DrawingElementType = type;
+            this.DrawingElement.Visible = false;
+            this.DrawingElement.IsComplete = false;
+            this.DrawingElement.Color = this.Color;
         }
 
-        private void OnScale(Point mouseLocation, double scale)
-        {
-            if (scale > MaxScale || scale < MinScale)
-            {
-                return;
-            }
-            if (imageElement != null)
-            {
-                imageElement.ScaleImage(mouseLocation, scale);
-            }
-
-            this.InvalidateVisual();
-        }
-        
-        public void Zoom(float relative)
-        {
-            this.OnScale(new Point(this.Width / 2, this.Height / 2), this.ImageScale * relative);
-        }
         public void AddElement(ImageViewElement element)
         {
             switch (element)
@@ -309,54 +360,58 @@ namespace Ncer.UI
         {
             //point.GlobalCoordinate = imageElement.Coordinate;
             //point.Parent = imageElement;
-            elements.Add(point);
-            baseElements.Add(point);
+            Elements.Add(point);
+            BaseElements.Add(point);
             for (int i = 0; i < point.keyPointList.Count; i++)
             {
-                baseElements.Add(point.keyPointList[i].TractionPoint);
+                BaseElements.Add(point.keyPointList[i].TractionPoint);
             }
-            baseElements.Sort();
+            BaseElements.Sort();
             this.InvalidateVisual();
         }
+
         public void AddLine(LineElement line)
         {
-            line.GlobalCoordinate = imageElement.Coordinate;
-            line.Parent = imageElement;
-            elements.Add(line);
-            baseElements.Add(line);
+            line.GlobalCoordinate = ImageElement.Coordinate;
+            line.Parent = ImageElement;
+            Elements.Add(line);
+            BaseElements.Add(line);
             for (int i = 0; i < line.keyPointList.Count; i++)
             {
-                baseElements.Add(line.keyPointList[i].TractionPoint);
+                BaseElements.Add(line.keyPointList[i].TractionPoint);
             }
-            baseElements.Sort();
+            BaseElements.Sort();
             this.InvalidateVisual();
         }
+
         public void AddPolygon(PolygonElement polygon)
         {
-            polygon.GlobalCoordinate = imageElement.Coordinate;
-            polygon.Parent = imageElement;
-            elements.Add(polygon);
-            baseElements.Add(polygon);
+            polygon.GlobalCoordinate = ImageElement.Coordinate;
+            polygon.Parent = ImageElement;
+            Elements.Add(polygon);
+            BaseElements.Add(polygon);
             for (int i = 0; i < polygon.keyPointList.Count; i++)
             {
-                baseElements.Add(polygon.keyPointList[i].TractionPoint);
+                BaseElements.Add(polygon.keyPointList[i].TractionPoint);
             }
-            baseElements.Sort();
+            BaseElements.Sort();
             this.InvalidateVisual();
         }
+
         public void AddRectangle(RectElement rect)
         {
-            rect.GlobalCoordinate = imageElement.Coordinate;
-            rect.Parent = imageElement;
-            elements.Add(rect);
-            baseElements.Add(rect);
-            baseElements.Add(rect.leftTopPoint);
-            baseElements.Add(rect.leftBottomPoint);
-            baseElements.Add(rect.rightTopPoint);
-            baseElements.Add(rect.rightBottomPoint);
-            baseElements.Sort();
+            rect.GlobalCoordinate = ImageElement.Coordinate;
+            rect.Parent = ImageElement;
+            Elements.Add(rect);
+            BaseElements.Add(rect);
+            BaseElements.Add(rect.leftTopPoint);
+            BaseElements.Add(rect.leftBottomPoint);
+            BaseElements.Add(rect.rightTopPoint);
+            BaseElements.Add(rect.rightBottomPoint);
+            BaseElements.Sort();
             this.InvalidateVisual();
         }
+
         //public void AddEllipse(EllipseElement ellipse)
         //{
         //    ellipse.ParentCoordinate = imageElement.coordinate;
@@ -372,39 +427,31 @@ namespace Ncer.UI
         public ImageViewElement GetTargetElement(double x, double y)
         {
 
-            for (int i = 0; i < baseElements.Count; i++)
+            for (int i = 0; i < BaseElements.Count; i++)
             {
-                if (baseElements[i].IsIn(x, y))
+                if (BaseElements[i].Focusable&& BaseElements[i].IsIn(x, y))
                 {
-                    return baseElements[i];
+                    return BaseElements[i];
                 }
             }
-            return imageElement;
+            return ImageElement;
         }
-        
-
-        public void AbsoluteMove(double x,double y)
-        {
-            this.imageElement.X = x ;
-            this.imageElement.Y = y;
-        }
-
 
         public void DeleteElement(ImageViewElement element)
         {
-            for (int i = 0; i < elements.Count; i++)
+            for (int i = 0; i < Elements.Count; i++)
             {
-                if (element == elements[i])
+                if (element == Elements[i])
                 {
-                    elements.RemoveAt(i);
+                    Elements.RemoveAt(i);
                 }
             }
 
-            for (int i = 0; i < baseElements.Count; i++)
+            for (int i = 0; i < BaseElements.Count; i++)
             {
-                if (element == baseElements[i].Parent)
+                if (element == BaseElements[i].Parent)
                 {
-                    baseElements.RemoveAt(i);
+                    BaseElements.RemoveAt(i);
                 }
             }
 
@@ -412,98 +459,75 @@ namespace Ncer.UI
             this.InvalidateVisual();
         }
 
-        #endregion
-
-        #region 创建图形元素
-
-        /// <summary>
-        /// 在绘制前先创建好对象
-        /// </summary>
-        /// <param name="type"></param>
-        /// <param name="name"></param>
-        public void CreateElement(ElementType type, string name="")
-        {
-            switch (type)
-            {
-                case ElementType.Image:
-                    break;
-                case ElementType.Point:
-                    this.drawingElement = new PointElement();
-                    break;
-                case ElementType.Line:
-                    this.drawingElement = new LineElement();
-                    break;
-                case ElementType.Rectangle:
-                    this.drawingElement = new RectElement();
-                    break;
-                case ElementType.Polygon:
-                    this.drawingElement = new PolygonElement();
-                    break;
-                //case ElementType.Ellipse:
-                //    this.drawingElement = new EllipseElement();
-                //    break;
-                default:
-                    break;
-            }
-            this.drawingElement.Name = name;
-            this.drawingElement.Parent = this.imageElement;
-            this.drawingElement.GlobalCoordinate = this.imageElement.Coordinate;
-            this.MouseState = MouseState.Idle;
-            this.ImageViewState = ImageViewState.Draw;
-            this.DrawingElementType = type;
-            this.drawingElement.Visible = false;
-            this.drawingElement.IsComplete = false;
-            this.drawingElement.Color = this.Color;
-        }
-
-
-
-        #endregion
-
         public void SelectElement(ImageViewElement element)
         {
-            if (this.selectedElement != null && !(element is TractionPoint))
+            if (this.SelectedElement != null && !(element is TractionPoint))
             {
-                this.selectedElement.Selected = false;
-                this.selectedElement = element;
-                this.selectedElement.Selected = true;
+                this.SelectedElement.Selected = false;
+                this.SelectedElement = element;
+                this.SelectedElement.Selected = true;
                 this.InvalidateVisual();
             }
             else
             {
-                this.selectedElement = element;
-                this.selectedElement.Selected = true;
+                this.SelectedElement = element;
+                this.SelectedElement.Selected = true;
                 this.InvalidateVisual();
             }
             
         }
 
 
+        public ImageViewElement GetElement(string name)
+        {
+            foreach (var item in this.Elements)
+            {
+                if(!string.IsNullOrWhiteSpace(item.Name) && item.Name == name)
+                {
+                    return item;
+                }
+            }
+
+            return null;
+        }
+
+
+
+        /// <summary>
+        /// 移除所有元素
+        /// </summary>
+        public void ClearElement()
+        {
+            this.BaseElements.Clear();
+            this.Elements.Clear();
+        }
+
+        #endregion
         #region ui 交互事件
         private void UserControl_MouseWheel(object sender, MouseWheelEventArgs e)
         {
             System.Console.WriteLine(e.Delta + "  " + e.GetPosition(this));
-            this.OnScale(e.GetPosition(this), this.imageElement.Scale * (e.Delta < 0 ? 0.8f : 1.25f));
+            this.OnScale(e.GetPosition(this), this.ImageElement.Scale * (e.Delta < 0 ? 0.8f : 1.25f));
         }
 
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
-            Point p = Coordinate.CoordinateTransport(e.GetPosition(this), Coordinate.BaseCoornidate, imageElement.Coordinate);
+            Point p = Coordinate.CoordinateTransport(e.GetPosition(this), Coordinate.BaseCoornidate, ImageElement.Coordinate);
             this.ImageMouseMove?.Invoke(this, new ImageMouseMoveEventArgs() { Location = p });
             ImageViewElement targetElement = this.GetTargetElement(p.X, p.Y);
-            pointedElement = targetElement;
+            PointedElement = targetElement;
 
             if (ImageViewState == ImageViewState.Normal)
             {
                 if (MouseState == MouseState.Operating)
                 {
-                    if (operatedElement != imageElement)
+                    if (OperatedElement != ImageElement)
                     {
                         //operatedElement.Move(p);
                     }
                     else
                     {
-                        AbsoluteMove(e.GetPosition(this).X - operationStartImagePoint.X * ImageScale, e.GetPosition(this).Y - operationStartImagePoint.Y * ImageScale);
+                        if(!FixImage) AbsoluteMove(e.GetPosition(this).X - OperationStartImagePoint.X * ImageScale, e.GetPosition(this).Y - OperationStartImagePoint.Y * ImageScale);
 
                     }
                     this.InvalidateVisual();
@@ -518,9 +542,9 @@ namespace Ncer.UI
             {
                 if (MouseState == MouseState.Operating)
                 {
-                    if(drawingElement is KeyPointElement)
+                    if(DrawingElement is KeyPointElement)
                     {
-                        (drawingElement as KeyPointElement).AdjustNextKeyPoint(p);
+                        (DrawingElement as KeyPointElement).AdjustNextKeyPoint(p);
                     }
                     
                     this.InvalidateVisual();
@@ -530,13 +554,13 @@ namespace Ncer.UI
             {
                 if (MouseState == MouseState.Operating)
                 {
-                    if (operatedElement != imageElement)
+                    if (OperatedElement != ImageElement)
                     {
-                        operatedElement.Move(this.operatedElementStartPoint.X + p.X - operationStartImagePoint.X, this.operatedElementStartPoint.Y + p.Y - operationStartImagePoint.Y);
+                        OperatedElement.Move(this.OperatedElementStartPoint.X + p.X - OperationStartImagePoint.X, this.OperatedElementStartPoint.Y + p.Y - OperationStartImagePoint.Y);
                     }
                     else
                     {
-                        AbsoluteMove(e.GetPosition(this).X - operationStartImagePoint.X * ImageScale, e.GetPosition(this).Y - operationStartImagePoint.Y * ImageScale);
+                        AbsoluteMove(e.GetPosition(this).X - OperationStartImagePoint.X * ImageScale, e.GetPosition(this).Y - OperationStartImagePoint.Y * ImageScale);
 
                     }
                     this.InvalidateVisual();
@@ -553,7 +577,7 @@ namespace Ncer.UI
 
         private void UserControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Point p = Coordinate.CoordinateTransport(e.GetPosition(this), Coordinate.BaseCoornidate, imageElement.Coordinate);
+            Point p = Coordinate.CoordinateTransport(e.GetPosition(this), Coordinate.BaseCoornidate, ImageElement.Coordinate);
             ImageViewElement targetElement = this.GetTargetElement(p.X, p.Y);
             if (ImageViewState == ImageViewState.Normal)
             {
@@ -566,7 +590,7 @@ namespace Ncer.UI
 
                 }
                 //图片拖动准备
-                this.operatedElement = targetElement;
+                this.OperatedElement = targetElement;
                 this.MouseState = MouseState.Operating;
                 this.operationStartControlPoint = e.GetPosition(this);
                 this.operationStartImagePoint = p;
@@ -575,25 +599,25 @@ namespace Ncer.UI
             if (ImageViewState == ImageViewState.Draw)
             {
 
-                this.SelectElement(this.drawingElement);
+                this.SelectElement(this.DrawingElement);
                 if (MouseState == MouseState.Idle)
                 {
                     MouseState = MouseState.Operating;
-                    drawingElement.Visible = true;
+                    DrawingElement.Visible = true;
                 }
                 //如果添加了最后一个点
-                if (drawingElement.AddKeyPoint(p))
+                if (DrawingElement.AddKeyPoint(p))
                 {
                     MouseState = MouseState.Idle;
-                    AddElement(drawingElement);
-                    this.ElementCreateEventHandler?.Invoke(drawingElement);//触发事件
+                    AddElement(DrawingElement);
+                    this.ElementCreateEventHandler?.Invoke(DrawingElement);//触发事件
                     if (this.ContinuousDraw)
                     {
                         CreateElement(this.DrawingElementType);
                     }
                     else
                     {
-                        drawingElement = null;
+                        DrawingElement = null;
                         this.ImageViewState = this.DefaultState;
                     }
                 }
@@ -627,13 +651,13 @@ namespace Ncer.UI
             if (ImageViewState == ImageViewState.Edit)//编辑模式 确定编辑对象
             {
                 //
-                this.operatedElement = targetElement;
+                this.OperatedElement = targetElement;
                 this.MouseState = MouseState.Operating;
                 this.operationStartControlPoint = e.GetPosition(this);
-                this.operationStartImagePoint = p;
-                this.operatedElementStartPoint = new Point(targetElement.X,targetElement.Y);
-                System.Console.WriteLine("operationStartImagePoint:" + operationStartImagePoint.X + "  " + operationStartImagePoint.Y);
-                this.SelectElement(operatedElement);
+                this.OperationStartImagePoint = p;
+                this.OperatedElementStartPoint = new Point(targetElement.X,targetElement.Y);
+                System.Console.WriteLine("operationStartImagePoint:" + OperationStartImagePoint.X + "  " + OperationStartImagePoint.Y);
+                this.SelectElement(OperatedElement);
             }
 
         }
@@ -658,12 +682,12 @@ namespace Ncer.UI
             }
             if (ImageViewState == ImageViewState.Edit)
             {
-                if (operatedElement != null)
+                if (OperatedElement != null)
                 {
-                    operatedElement.ChangeDone();
+                    OperatedElement.ChangeDone();
                 }
                 MouseState = MouseState.Idle;
-                operatedElement = null;
+                OperatedElement = null;
             }  
         }
 
@@ -695,7 +719,7 @@ namespace Ncer.UI
                     this.CurItem.DeleteAllElement();
                     break;
                 case "DeleteSelectedElement":
-                    this.CurItem.DeleteElement(this.selectedElement);
+                    this.CurItem.DeleteElement(this.SelectedElement);
                     break;
                 default:
                     break;
@@ -754,14 +778,14 @@ namespace Ncer.UI
         {
             if (ImageViewState == ImageViewState.Draw)
             {
-                if (this.drawingElement is PolygonElement)
+                if (this.DrawingElement is PolygonElement)
                 {
                     e.Handled = true;
                     MouseState = MouseState.Idle;
-                    if ((drawingElement as PolygonElement).Complete())
+                    if ((DrawingElement as PolygonElement).Complete())
                     {
-                        AddElement(drawingElement);
-                        this.ElementCreateEventHandler?.Invoke(drawingElement);//触发事件
+                        AddElement(DrawingElement);
+                        this.ElementCreateEventHandler?.Invoke(DrawingElement);//触发事件
                     }
                     else{
                         this.InvalidateVisual();
@@ -775,7 +799,7 @@ namespace Ncer.UI
                     }
                     else
                     {
-                        drawingElement = null;
+                        DrawingElement = null;
                         this.ImageViewState = this.DefaultState;
                     }
                 }
