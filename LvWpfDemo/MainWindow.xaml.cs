@@ -66,6 +66,7 @@ namespace LvWpfDemo
             point.OnElementChangeDoneEvent += Point_OnElementChangeDoneEvent;
             imageView.AddPoint(point);
             imageView.AddRectangle(new RectElement(100, 100, 100, 100));
+            imageView.AddLine(new LineElement(new Point(10, 10), new Point(100, 200)));
             
 
             //var a = new TimePlotSeries("sd", Colors.Lime, 2);

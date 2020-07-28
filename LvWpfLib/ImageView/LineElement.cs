@@ -13,6 +13,7 @@ namespace Ncer.UI
     public class LineElement : KeyPointElement
     {
         private KeyPoint tmpPoint;//绘图时的临时关键点
+        
         public override double X
         {
             get
@@ -57,11 +58,34 @@ namespace Ncer.UI
             }
         }
 
+        public KeyPoint P1
+        {
+            get =>  keyPointList[0] ;
+        }
+        public KeyPoint P2
+        {
+            get => keyPointList[1];
+        }
+
+
+
+        public LineElement(Point p1,Point p2)
+        {
+            this.ElementCursor = Cursors.Hand;
+            tmpPoint = new KeyPoint(0, 0, this);
+            KeyPointAmount = 2;
+            this.Width = 6;
+            this.IsComplete = false;
+            this.AddKeyPoint(p1);
+            this.AddKeyPoint(p2);
+        }
+
         public LineElement()
         {
             this.ElementCursor = Cursors.Hand;
             tmpPoint = new KeyPoint(0, 0, this);
             KeyPointAmount = 2;
+            this.Width = 6;
 
         }
 
@@ -148,7 +172,9 @@ namespace Ncer.UI
 
         public override bool IsIn(double x, double y)
         {
-            return GeometryCal.PointInLine(x, y, this.GetPoints());
+            var ps = this.GetPoints();
+            if (ps.Count < 2) return false;
+            return GeometryCal.PointSegmentDistance(this.GetPoints()[0],GetPoints()[1],new Point(x,y))<this.Width/2;
         }
     }
 }

@@ -27,6 +27,7 @@ namespace Ncer.UI
         }
         public void FitToWindow(double w, double h)
         {
+            if (image == null) return;
             this.Scale = Math.Min(h / image.Height, w / image.Width);
             this.X = Math.Max(0, (w - image.Width * this.Scale) / 2);
             this.Y = Math.Max(0, (h - image.Height * this.Scale) / 2);

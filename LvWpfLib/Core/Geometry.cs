@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.SymbolStore;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -84,14 +85,39 @@ namespace Ncer.UI
 
         }
 
-        public static bool PointInLine(double x,double y,List<Point> line)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="l1">线段点1</param>
+        /// <param name="l2">线段点2</param>
+        /// <param name="point">外部点</param>
+        /// <returns></returns>
+        public static double PointSegmentDistance(Point l1,Point l2,Point point)
         {
-            return false;
-            if(line==null || line.Count != 2)
+            var ab = l2 - l1;
+            var ac = point - l1;
+            double f = ab.X * ac.X + ab.Y * ac.Y;
+            double distance = 0;
+            if(f<=0)
             {
-                return false;
+                return  PointDistance(l1, point);
             }
+            double d= ab.X * ab.X + ab.Y * ab.Y;
+            if (f > d)
+            {
+                return PointDistance(l2, point);
+            }
+            f = f / d;
+            Point feet = l1 + ab * f;
+            return PointDistance(feet, point);
+        }
 
+
+
+        public static double PointDistance(Point p1,Point p2)
+        {
+            var d = p1 - p2;
+            return Math.Sqrt(Math.Pow(d.X, 2) + Math.Pow(d.Y ,2));
         }
     }
 

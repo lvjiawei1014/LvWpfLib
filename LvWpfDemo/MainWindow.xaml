@@ -213,7 +213,7 @@
         <TabControl Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
-                    <UI:ImageView x:Name="imageView" HorizontalAlignment="Left" Height="353" Margin="10,10,0,0" VerticalAlignment="Top" Width="487" Image="1.jpg" AutoFit="True"/>
+                    <UI:ImageView x:Name="imageView" HorizontalAlignment="Left" Height="353" Margin="10,10,0,0" VerticalAlignment="Top" Width="487" Image="1.jpg" AutoFit="True" ToolBoxVisibility="Collapsed"/>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
