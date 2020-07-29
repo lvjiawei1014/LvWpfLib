@@ -105,5 +105,15 @@ namespace LvWpfDemo
             colorBar.ColormapType = ColormapType.Gray;
 
         }
+
+        private void btnDrawEllipse_Click(object sender, RoutedEventArgs e)
+        {
+            imageView.CreateElement(ElementType.Ellipse);
+        }
+
+        private void btnDrawCircle_Click(object sender, RoutedEventArgs e)
+        {
+            imageView.CreateElement(ElementType.Circle);
+        }
     }
 }

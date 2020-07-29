@@ -206,14 +206,16 @@
             <RowDefinition Height="351*"/>
             <RowDefinition Height="49"/>
         </Grid.RowDefinitions>
-        <Button Content="多边形" Grid.Column="1" HorizontalAlignment="Left" Margin="250,10,-99,0" VerticalAlignment="Top" Width="75" Click="btn2_Click" Height="19" Style="{DynamicResource ButtonStyle1}" Grid.Row="2"/>
         <Button x:Name="btnEdit" Content="编辑" Grid.Column="1" HorizontalAlignment="Left" Margin="451,10,-300,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" Click="BtnEdit_Click"/>
         <ToolBar Grid.ColumnSpan="2" Height="19" VerticalAlignment="Top" Style="{DynamicResource ToolBarStyle1}"/>
-        <Button x:Name="btnDrawRect" Content="绘制矩形" Grid.Column="1" HorizontalAlignment="Left" Margin="330,10,-179,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Grid.Row="2" Click="BtnDrawRect_Click"/>
         <TabControl Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2">
             <TabItem Header="TabItem">
                 <Grid Background="#FFE5E5E5">
                     <UI:ImageView x:Name="imageView" HorizontalAlignment="Left" Height="353" Margin="10,10,0,0" VerticalAlignment="Top" Width="487" Image="1.jpg" AutoFit="True" ToolBoxVisibility="Collapsed"/>
+                    <Button Content="多边形" HorizontalAlignment="Left" Margin="599,131,0,0" VerticalAlignment="Top" Width="75" Click="btn2_Click" Height="19" Style="{DynamicResource ButtonStyle1}"/>
+                    <Button x:Name="btnDrawRect" Content="绘制矩形" HorizontalAlignment="Left" Margin="599,184,0,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Click="BtnDrawRect_Click"/>
+                    <Button x:Name="btnDrawEllipse" Content="绘制Ellipse" HorizontalAlignment="Left" Margin="599,235,0,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Click="btnDrawEllipse_Click"/>
+                    <Button x:Name="btnDrawCircle" Content="绘制Circle" HorizontalAlignment="Left" Margin="599,280,0,0" VerticalAlignment="Top" Width="75" Height="19" Style="{DynamicResource ButtonStyle1}" Click="btnDrawCircle_Click"/>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">

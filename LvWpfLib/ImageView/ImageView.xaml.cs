@@ -359,9 +359,12 @@ namespace Ncer.UI
                 case ElementType.Polygon:
                     this.DrawingElement = new PolygonElement();
                     break;
-                //case ElementType.Ellipse:
-                //    this.drawingElement = new EllipseElement();
-                //    break;
+                case ElementType.Ellipse:
+                    this.DrawingElement = new EllipseElement();
+                    break;
+                case ElementType.Circle:
+                    this.DrawingElement = new CircleElement();
+                    break;
                 default:
                     break;
             }
@@ -437,7 +440,12 @@ namespace Ncer.UI
                 case PolygonElement polygon when element is PolygonElement:
                     AddPolygon(polygon);
                     break;
-
+                case EllipseElement ellipse when element is EllipseElement:
+                    AddEllipse(ellipse);
+                    break;
+                case CircleElement circle when element is CircleElement:
+                    AddCircle(circle);
+                    break;
                 default:
                     break;
             }
@@ -454,8 +462,6 @@ namespace Ncer.UI
 
         public void AddPoint(PointElement point)
         {
-            //point.GlobalCoordinate = imageElement.Coordinate;
-            //point.Parent = imageElement;
             if (point.Parent == null) point.Parent = ImageElement;
             Elements.Add(point);
             BaseElements.Add(point);
@@ -508,6 +514,34 @@ namespace Ncer.UI
             BaseElements.Sort();
             this.InvalidateVisual();
         }
+
+        public void AddEllipse(EllipseElement ellipse)
+        {
+            ellipse.GlobalCoordinate = ImageElement.Coordinate;
+            ellipse.Parent = ImageElement;
+            Elements.Add(ellipse);
+            BaseElements.Add(ellipse);
+            BaseElements.Add(ellipse.leftTopPoint);
+            BaseElements.Add(ellipse.leftBottomPoint);
+            BaseElements.Add(ellipse.rightTopPoint);
+            BaseElements.Add(ellipse.rightBottomPoint);
+            BaseElements.Sort();
+            this.InvalidateVisual();
+        }
+        public void AddCircle(CircleElement  circle)
+        {
+            circle.GlobalCoordinate = ImageElement.Coordinate;
+            circle.Parent = ImageElement;
+            Elements.Add(circle);
+            BaseElements.Add(circle);
+            BaseElements.Add(circle.leftTopPoint);
+            BaseElements.Add(circle.leftBottomPoint);
+            BaseElements.Add(circle.rightTopPoint);
+            BaseElements.Add(circle.rightBottomPoint);
+            BaseElements.Sort();
+            this.InvalidateVisual();
+        }
+
 
         public ImageViewElement GetTargetElement(double x, double y)
         {

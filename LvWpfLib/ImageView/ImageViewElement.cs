@@ -81,27 +81,46 @@ namespace Ncer.UI
             this.coordinate.X = x;
             this.coordinate.Y = y;
         }
-
+        /// <summary>
+        /// 对象的绘制
+        /// </summary>
+        /// <param name="drawingContext"></param>
         public abstract void Drawing(DrawingContext drawingContext);
         public virtual void OnElementChange(ImageViewElement element)
         {
             this.OnElementChangeEvent?.Invoke(this);
         }
-
+        /// <summary>
+        /// 被选中时
+        /// </summary>
+        /// <param name="b"></param>
         public abstract void BeSelect(bool b);
-
+        /// <summary>
+        /// 判断是否在对象内部
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public abstract bool IsIn(double x, double y);
-
+        /// <summary>
+        /// 比较对象的前后
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public int CompareTo(ImageViewElement other)
         {
             return this.Z == other.Z ? 0 : (this.Z > other.Z ? 1 : -1);
         }
-
+        /// <summary>
+        /// 对象被删除
+        /// </summary>
         public void Delete()
         {
             this.OnElementDelete?.Invoke(this);
         }
-
+        /// <summary>
+        /// 对象修改完成
+        /// </summary>
         public void ChangeDone()
         {
             this.OnElementChangeDoneEvent?.Invoke(this);
@@ -178,5 +197,6 @@ namespace Ncer.UI
         Rectangle = 3,
         Polygon = 4,
         Ellipse = 5,
+        Circle=6,
     }
 }

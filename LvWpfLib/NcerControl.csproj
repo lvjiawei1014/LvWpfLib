@@ -95,7 +95,9 @@
     <Compile Include="ColormapBar\ColormapBar.xaml.cs">
       <DependentUpon>ColormapBar.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ImageView\CircleElement.cs" />
     <Compile Include="ImageView\DisplayItem.cs" />
+    <Compile Include="ImageView\EllipseElement.cs" />
     <Compile Include="ImageView\ImageElement.cs" />
     <Compile Include="ImageView\InteractionImageElement.cs" />
     <Compile Include="ImageView\PointElement.cs" />
