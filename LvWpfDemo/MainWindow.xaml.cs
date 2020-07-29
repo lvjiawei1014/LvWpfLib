@@ -98,6 +98,9 @@ namespace LvWpfDemo
         private void btnJet_Click(object sender, RoutedEventArgs e)
         {
             colorBar.ColormapType = ColormapType.Jet;
+//             colorBar.MaxValue = 1000;
+//             colorBar.MinValue = 0;
+//             colorBar.NumMapType = NumMapType.Log;
         }
 
         private void btnGray_Click(object sender, RoutedEventArgs e)

@@ -4,10 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Ncer.UI"
-             mc:Ignorable="d" 
-             d:DesignHeight="400" d:DesignWidth="20" BorderBrush="White"
-             BorderThickness="1">
+             mc:Ignorable="d" BorderBrush="White"
+             BorderThickness="0" Height="400">
     <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <LinearGradientBrush x:Key="colormapGray" EndPoint="0.5,1" StartPoint="0.5,0">
             <GradientStop Color="Black" Offset="1"/>
             <GradientStop Color="White" Offset="0"/>
@@ -19,10 +19,18 @@
             <GradientStop Color="#00FFFF" Offset="0.25"/>
             <GradientStop Color="#0000FF" Offset="0"/>
         </LinearGradientBrush>
+        <ItemsPanelTemplate x:Key="ItemsPanelTemplateColormap">
+            <UniformGrid Columns="1" IsItemsHost="True"/>
+        </ItemsPanelTemplate>
     </UserControl.Resources>
-    <Grid x:Name="gridMain" Background="{DynamicResource colormapJet}">
+    <DockPanel>
+        <Border Name="main" DockPanel.Dock="Left" BorderBrush="White" BorderThickness="1">
+            <Grid x:Name="gridMain" Background="{DynamicResource colormapJet}" Width="10"/>
+        </Border>
+        <Grid MinWidth="20"  Name="gridIndicator" Visibility="{Binding ShowNumericalIndicator, Converter={StaticResource BooleanToVisibilityConverter}}">
+            
+        </Grid>
 
-
-    </Grid>
+    </DockPanel>
 
 </UserControl>
