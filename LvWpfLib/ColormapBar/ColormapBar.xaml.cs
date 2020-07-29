@@ -156,7 +156,7 @@ namespace Ncer.UI
                     double logMin = Math.Log(minValue + 1);
                     for (int i = 1; i < indicatorValues.Length - 1; i++)
                     {
-                        indicatorValues[i] = Math.Pow(10, logMax - (logMax - logMin) * i / (indicatorValues.Length - 1)) - 1;
+                        indicatorValues[i] = Math.Pow(Math.E, logMax - (logMax - logMin) * i / (indicatorValues.Length - 1)) - 1;
                     }
                     break;
                 case NumMapType.Log10:
