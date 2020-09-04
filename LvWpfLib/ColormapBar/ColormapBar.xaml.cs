@@ -202,7 +202,6 @@ namespace Ncer.UI
                 temp.Margin = new Thickness(0,i * inter, 0, 0);
                 gridIndicator.Children.Add(temp);
             }
-
         }
 
     }

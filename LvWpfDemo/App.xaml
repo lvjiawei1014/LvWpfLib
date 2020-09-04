@@ -2,8 +2,10 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:LvWpfDemo"
-             StartupUri="MainWindow.xaml">
+             StartupUri="WindowStyleDemo.xaml">
     <Application.Resources>
+
+
 
         <DrawingBrush x:Key="TileBack" TileMode="Tile" Viewbox="0,0,16,16" Viewport="0,0,16,16" ViewportUnits="Absolute" ViewboxUnits="Absolute">
             <DrawingBrush.Drawing>

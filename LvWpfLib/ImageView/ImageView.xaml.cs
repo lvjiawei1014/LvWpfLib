@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using Point = System.Windows.Point;
+
 
 namespace Ncer.UI
 {
@@ -51,8 +53,10 @@ namespace Ncer.UI
         private System.Windows.Media.Color color = System.Windows.Media.Colors.Lime;
         private ImageViewState defaultState = ImageViewState.Normal;
         private Visibility toolBoxVisibility = Visibility.Collapsed;
-
         private bool contextMenuEnable = true;
+
+        private Point multiTouchCenter = new Point();
+        private bool multiTouchFlag = false;
 
         #endregion 成员变量
 
@@ -106,6 +110,7 @@ namespace Ncer.UI
         public List<DisplayItem> Items { get => items; set => items = value; }
         public bool ContextMenuEnable { get => contextMenuEnable; set => contextMenuEnable = value; }
 
+        public bool MultiTouchEnable { get; set; }
         #endregion 属性
 
         #region 初始化
@@ -209,14 +214,23 @@ namespace Ncer.UI
             this.InvalidateVisual();
         }
 
+        public void Zoom(float relative, Point center)
+        {
+            if (this.ImageElement == null || this.ImageElement.Image == null) return;
+            this.OnScale(center, this.ImageScale * relative);
+        }
+
         public void Zoom(float relative)
         {
-            this.OnScale(new Point(this.Width / 2, this.Height / 2), this.ImageScale * relative);
+            if (this.ImageElement == null || this.ImageElement.Image == null) return;
+
+            this.OnScale(new Point(this.ActualWidth / 2, this.ActualHeight / 2), this.ImageScale * relative);
+
         }
 
         public void FitToWindow()
         {
-            this.ImageElement.FitToWindow(this.ActualWidth,this.ActualHeight);
+            this.ImageElement.FitToWindow(this.ActualWidth, this.ActualHeight);
             this.InvalidateVisual();
         }
 
@@ -379,6 +393,19 @@ namespace Ncer.UI
             this.DrawingElement.Color = this.Color;
         }
 
+        public void CreateElement(KeyPointElement element, string name = "")
+        {
+            this.DrawingElement = element;
+            this.DrawingElement.Name = name;
+            this.DrawingElement.Parent = this.ImageElement;
+            this.DrawingElement.GlobalCoordinate = this.ImageElement.Coordinate;
+            this.MouseState = MouseState.Idle;
+            this.ImageViewState = ImageViewState.Draw;
+            this.DrawingElement.Visible = false;
+            this.DrawingElement.IsComplete = false;
+            this.DrawingElement.Color = this.Color;
+        }
+
         public void FinishCreateElement()
         {
             if (ImageViewState == ImageViewState.Draw)
@@ -528,7 +555,7 @@ namespace Ncer.UI
             BaseElements.Sort();
             this.InvalidateVisual();
         }
-        public void AddCircle(CircleElement  circle)
+        public void AddCircle(CircleElement circle)
         {
             circle.GlobalCoordinate = ImageElement.Coordinate;
             circle.Parent = ImageElement;
@@ -585,7 +612,7 @@ namespace Ncer.UI
             }
             this.SelectedElement = element;
             this.SelectedElement.Selected = true;
-            if(element.IsComplete) this.OnElementSelected?.Invoke(this, element);
+            if (element.IsComplete) this.OnElementSelected?.Invoke(this, element);
             this.InvalidateVisual();
         }
 
@@ -929,5 +956,38 @@ namespace Ncer.UI
         }
 
         #endregion ui 交互事件
+
+        #region 多点触控
+        private void UserControl_ManipulationStarted(object sender, ManipulationStartedEventArgs e)
+        {
+            Console.WriteLine("MT_start");
+        }
+
+        private void UserControl_ManipulationDelta(object sender, ManipulationDeltaEventArgs e)
+        {
+            Console.WriteLine($"MT_delta");
+            double x = 0;
+            double y = 0;
+            if (e.Manipulators.Count() >= 2)
+            {
+                foreach (var item in e.Manipulators)
+                {
+                    var point = item.GetPosition(this);
+                    x += point.X;
+                    y += point.Y;
+                }
+                x /= e.Manipulators.Count();
+                y /= e.Manipulators.Count();
+                this.multiTouchCenter = new Point(x, y);
+            }
+
+            this.OnScale(this.multiTouchCenter, this.ImageElement.Scale * e.DeltaManipulation.Scale.Length);
+        }
+
+        private void UserControl_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
+        {
+            Console.WriteLine("MT_completed");
+        }
+        #endregion
     }
 }

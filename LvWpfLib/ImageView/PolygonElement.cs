@@ -21,6 +21,7 @@ namespace Ncer.UI
 
         private KeyPoint tmpPoint;//绘图时的临时关键点
 
+        public int PointNum { get; set; } = 0;
 
         public override double X
         {
@@ -128,6 +129,10 @@ namespace Ncer.UI
             kp.TractionPoint.ElementCursor = Cursors.SizeAll;
             kp.KeyPointChangeEventHandler += Kp_KeyPointChangeEventHandler;
             this.keyPointList.Add(kp);
+            if(PointNum>2 && this.keyPointList.Count == PointNum)
+            {
+                return this.Complete();
+            }
             return false;
 
         }

@@ -157,7 +157,8 @@ namespace Ncer.UI
 
             if (Elements.Contains(element))
             {
-                Elements.Remove(element);   
+                Elements.Remove(element);
+                this.ElementDeleteEventHandler?.Invoke(element);
             }
 
 
@@ -201,13 +202,10 @@ namespace Ncer.UI
 
         public void DeleteAllElement()
         {
-            //for (int i = 0; i < this.elements.Count; i++)
-            //{
-            //    this.DeleteElement(elements[i]);
-            //}
             foreach(var item in this.Elements)
             {
                 item.Delete();
+                this.ElementDeleteEventHandler?.Invoke(item);
             }
             Elements.Clear();
             BaseElements.Clear();
