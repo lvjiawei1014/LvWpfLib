@@ -92,6 +92,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Utils\BindableBase.cs" />
     <Compile Include="ColormapBar\ColormapBar.xaml.cs">
       <DependentUpon>ColormapBar.xaml</DependentUpon>
     </Compile>
@@ -104,6 +105,10 @@
     <Compile Include="ImageView\KeyPoint.cs" />
     <Compile Include="ImageView\KeyPointElement.cs" />
     <Compile Include="ImageView\LineElement.cs" />
+    <Compile Include="NumberPad\NumberPad.xaml.cs">
+      <DependentUpon>NumberPad.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NumberPad\NumberPadViewModel.cs" />
     <Compile Include="Plot\NcTimePlot.xaml.cs">
       <DependentUpon>NcTimePlot.xaml</DependentUpon>
     </Compile>
@@ -116,6 +121,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ImageView\ImageView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NumberPad\NumberPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Ncer.Theme.Button.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -153,6 +166,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Ncer.Theme.ListBoxItemPanel.Selector.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Ncer.Theme.Textbox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -196,5 +213,6 @@
       <Version>4.9.0</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

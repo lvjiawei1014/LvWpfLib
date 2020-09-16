@@ -9,10 +9,13 @@
         <ResourceDictionary Source="pack://application:,,,/NcerControlLib;component/Themes/Ncer.Theme.ListBoxItemPanel.Selector.xaml" />
         <ResourceDictionary Source="pack://application:,,,/NcerControlLib;component/Themes/Ncer.Theme.ListBoxItem.Selector.xaml" />
         <ResourceDictionary Source="pack://application:,,,/NcerControlLib;component/Themes/Ncer.Theme.ListBoxItem.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/NcerControlLib;component/Themes/Ncer.Theme.Button.xaml" />
+        <ResourceDictionary Source="pack://application:,,,/NcerControlLib;component/Themes/Ncer.Theme.Textbox.xaml" />
 
     </ResourceDictionary.MergedDictionaries>
 
 
+    <!--主要前景和背景-->
     <SolidColorBrush x:Key="Theme.Background" Color="#FF252525"/>
     <SolidColorBrush x:Key="Theme.Foreground" Color="White"/>
     <SolidColorBrush x:Key="Theme.BorderBrush" Color="White"/>
