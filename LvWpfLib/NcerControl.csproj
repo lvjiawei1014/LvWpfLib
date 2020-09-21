@@ -92,6 +92,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Optical\SignalLevel.xaml.cs">
+      <DependentUpon>SignalLevel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Utils\BindableBase.cs" />
     <Compile Include="ColormapBar\ColormapBar.xaml.cs">
       <DependentUpon>ColormapBar.xaml</DependentUpon>
@@ -125,6 +128,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="NumberPad\NumberPad.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Optical\SignalLevel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

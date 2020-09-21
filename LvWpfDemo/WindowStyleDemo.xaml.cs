@@ -23,5 +23,10 @@ namespace LvWpfDemo
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            //sl.Value = 0.8;
+        }
     }
 }
