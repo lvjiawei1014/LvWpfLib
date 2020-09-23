@@ -17,6 +17,8 @@
 
     <!--主要前景和背景-->
     <SolidColorBrush x:Key="Theme.Background" Color="#FF252525"/>
+    <SolidColorBrush x:Key="Theme.Background.Pressed" Color="#FF0A0A0A"/>
+    <SolidColorBrush x:Key="Theme.Background.MouseOver" Color="#CC464646"/>
     <SolidColorBrush x:Key="Theme.Foreground" Color="White"/>
     <SolidColorBrush x:Key="Theme.BorderBrush" Color="White"/>
 

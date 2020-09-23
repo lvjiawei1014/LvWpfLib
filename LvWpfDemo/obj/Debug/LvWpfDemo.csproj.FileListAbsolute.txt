@@ -83,3 +83,4 @@ E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\NcerControlLib.dll
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\bin\Debug\NcerControlLib.pdb
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\WindowStyleDemo.g.cs
 E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\WindowStyleDemo.baml
+E:\Project\GitHub\LvWpfLib\LvWpfDemo\obj\Debug\GeneratedInternalTypeHelper.g.cs
