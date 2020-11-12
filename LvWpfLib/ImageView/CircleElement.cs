@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -83,6 +84,9 @@ namespace Ncer.UI
             }
         }
 
+
+
+
         public Point Center
         {
             get
@@ -107,7 +111,12 @@ namespace Ncer.UI
             }
             set
             {
+                ////if (value == Radius) return;
+                //var diff = value - Width / 2;
+                //X -= diff;
+                //Y -= diff;
                 Width = value * 2;
+                Height = Width;
             }
         }
 
@@ -363,7 +372,7 @@ namespace Ncer.UI
             loca.Y += Radius * Parent.Coordinate.Scale;
             loca.X += Radius * Parent.Coordinate.Scale;
             Brush br = new SolidColorBrush(this.Color);
-            drawingContext.DrawEllipse(null, new Pen(br, 1),loca , Radius * Parent.Coordinate.Scale, Radius * Parent.Coordinate.Scale);
+            drawingContext.DrawEllipse(null, new Pen(br, LineWidth),loca , Radius * Parent.Coordinate.Scale, Radius * Parent.Coordinate.Scale);
             //drawingContext.DrawRectangle(null, new Pen(br, 1), new Rect(loca.X, loca.Y, Width * Parent.Coordinate.Scale, Height * Parent.Coordinate.Scale));
             if (ShowTag && !string.IsNullOrEmpty(Tag))
             {

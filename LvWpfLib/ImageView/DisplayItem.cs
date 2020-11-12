@@ -87,6 +87,9 @@ namespace Ncer.UI
                 case PolygonElement polygon when element is PolygonElement:
                     AddPolygon(polygon);
                     break;
+                case CircleElement circle when element is CircleElement:
+                    AddCircle(circle);
+                    break;
 
                 default:
                     break;
@@ -151,6 +154,20 @@ namespace Ncer.UI
             BaseElements.Add(rect.rightTopPoint);
             BaseElements.Add(rect.rightBottomPoint);
             BaseElements.Sort();
+        }
+
+        public void AddCircle(CircleElement circle)
+        {
+            circle.GlobalCoordinate = imageElement.Coordinate;
+            circle.Parent = ImageElement;
+            Elements.Add(circle);
+            BaseElements.Add(circle);
+            BaseElements.Add(circle.leftTopPoint);
+            BaseElements.Add(circle.leftBottomPoint);
+            BaseElements.Add(circle.rightTopPoint);
+            BaseElements.Add(circle.rightBottomPoint);
+            BaseElements.Sort();
+
         }
         public void DeleteElement(ImageViewElement element)
         {

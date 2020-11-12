@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -40,7 +41,7 @@ namespace Ncer.UI
 
         // Using a DependencyProperty as the backing store for Value.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(double), typeof(SignalLevel), new PropertyMetadata(0d,OnValueChanged));
+            DependencyProperty.Register("Value", typeof(double), typeof(SignalLevel), new FrameworkPropertyMetadata(0d,FrameworkPropertyMetadataOptions.None,  new PropertyChangedCallback(OnValueChanged)));
 
         private static void OnValueChanged(DependencyObject dpobj, DependencyPropertyChangedEventArgs e)
         {
@@ -65,7 +66,6 @@ namespace Ncer.UI
                 signalLevel.Fill = SignalLevel.DefaultFill;
             }
             signalLevel.PART_Indicator.Width = signalLevel.PART_Track.ActualWidth * tmp;
-
         }
 
         public Brush Fill

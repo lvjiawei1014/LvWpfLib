@@ -292,7 +292,7 @@ namespace Ncer.UI
         }
         private void SwitchDisplayItem(DisplayItem displayItem)
         {
-            if (displayItem == null) return;
+            if (displayItem == null || this.selectedDisplayItem==displayItem) return;
             this.AbortCreateElement();
             this.selectedDisplayItem = displayItem;
             this.MouseState = MouseState.Idle;
@@ -635,6 +635,7 @@ namespace Ncer.UI
         public void ClearElement()
         {
             this.selectedDisplayItem.DeleteAllElement();
+            this.InvalidateVisual();
         }
 
         #endregion Elements

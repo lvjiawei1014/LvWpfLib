@@ -70,6 +70,7 @@ namespace Ncer.UI
         public object Item { get => item; set => item = value; }
         public bool Editable { get => editable; set => editable = value; }
 
+        public double LineWidth { get; set; } = 1;
         #endregion
         public ImageViewElement()
         {

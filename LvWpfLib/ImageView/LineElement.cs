@@ -139,7 +139,7 @@ namespace Ncer.UI
             Point loca = Coordinate.CoordinateTransport(new Point(X, Y), this.Parent.Coordinate, Coordinate.BaseCoornidate);
 
             Brush br = new SolidColorBrush(this.Color);
-            Pen pen = new Pen(br, 1);
+            Pen pen = new Pen(br, LineWidth);
 
             if (IsComplete)
             {

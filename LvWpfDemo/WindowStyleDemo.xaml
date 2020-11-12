@@ -12,7 +12,6 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/NcerControlLib;component/Themes/Ncer.Theme.Dark.xaml" />
             </ResourceDictionary.MergedDictionaries>
             <SolidColorBrush x:Key="ProgressBar.Progress" Color="#FF06B025"/>
             <SolidColorBrush x:Key="ProgressBar.Background" Color="#FFE6E6E6"/>
@@ -79,18 +78,50 @@
             </Style>
         </ResourceDictionary>
     </Window.Resources>
+    <Window.DataContext>
+        <local:MainViewModel/>
+    </Window.DataContext>
     <Grid>
-        <ListBox SelectedIndex="1" HorizontalAlignment="Center" VerticalAlignment="Center" ItemsPanel="{DynamicResource Ncer.Theme.ListBoxItemsPanel.Selector}" >
-            <ListBoxItem Content="Hello"/>
-            <ListBoxItem Content="Anne"/>
-        </ListBox>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="124,50,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Style="{DynamicResource ButtonStyle1}"/>
-        <Label Content="Label" HorizontalAlignment="Left" Margin="66,62,0,0" VerticalAlignment="Top"/>
-        <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="100" Margin="164,87,0,0" VerticalAlignment="Top" Width="100"/>
-        <TextBox x:Name="tbValue" HorizontalAlignment="Left" Height="22" Margin="419,92,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="357,69,0,0" VerticalAlignment="Top" Width="75" />
-        <nc:NumberPad HorizontalAlignment="Left" Height="290" Margin="480,119,0,0" VerticalAlignment="Top" Width="265"/>
-        <ProgressBar Orientation="Vertical" BorderThickness="1" Value="10" HorizontalAlignment="Left" Height="136" Margin="140,210,0,0" VerticalAlignment="Top" Width="12" Style="{DynamicResource ProgressBarStyle1}" Background="{x:Null}"/>
-        <nc:SignalLevel x:Name="sl" HorizontalAlignment="Left" Height="63" Margin="185,321,0,0" VerticalAlignment="Top" Width="149" Value="{Binding Signal, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:WindowStyleDemo}}}" BorderThickness="1" BorderBrush="White" />
+
+
+        <TabControl Background="Black">
+            <TabItem Header="ImageView">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="337*"/>
+                        <ColumnDefinition Width="56*"/>
+                    </Grid.ColumnDefinitions>
+                    <nc:ImageView Name="ivMain"/>
+                    <StackPanel Orientation="Vertical" Grid.Column="1">
+                        <Button x:Name="btnCircle" Content="Circle" Click="btnCircle_Click"/>
+                    </StackPanel>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Button">
+
+            </TabItem>
+            <TabItem Header="Field">
+
+            </TabItem>
+            <TabItem Header="TabControl">
+                <Grid>
+                    <ListBox SelectedIndex="1" HorizontalAlignment="Center" VerticalAlignment="Center" ItemsPanel="{DynamicResource Ncer.Theme.ListBoxItemsPanel.Selector}" >
+                        <ListBoxItem Content="Hello"/>
+                        <ListBoxItem Content="Anne"/>
+                    </ListBox>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="124,50,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Style="{DynamicResource ButtonStyle1}"/>
+                    <Label Content="Label" HorizontalAlignment="Left" Margin="66,62,0,0" VerticalAlignment="Top"/>
+                    <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Height="100" Margin="164,87,0,0" VerticalAlignment="Top" Width="100"/>
+                    <TextBox x:Name="tbValue" HorizontalAlignment="Left" Height="22" Margin="419,92,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+                    <Button Content="Button" HorizontalAlignment="Left" Margin="357,69,0,0" VerticalAlignment="Top" Width="75" />
+                    <nc:NumberPad HorizontalAlignment="Left" Height="290" Margin="480,119,0,0" VerticalAlignment="Top" Width="265"/>
+                    <ProgressBar Orientation="Vertical" BorderThickness="1" Value="10" HorizontalAlignment="Left" Height="136" Margin="140,210,0,0" VerticalAlignment="Top" Width="12" Style="{DynamicResource ProgressBarStyle1}" Background="{x:Null}"/>
+                    <nc:SignalLevel x:Name="sl" HorizontalAlignment="Left" Height="45" Margin="185,321,0,0" VerticalAlignment="Top" Width="149" Value="{Binding XPath=Signal,Mode=TwoWay}" BorderThickness="1" BorderBrush="White" />
+
+                </Grid>
+            </TabItem>
+
+
+        </TabControl>
     </Grid>
 </Window>
